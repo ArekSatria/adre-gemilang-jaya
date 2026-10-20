@@ -2,11 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Warna Panduan Resmi PT Adre Gemilang Jaya */
+  --bg-obsidian: #0f131c;
+  --bg-surface: #16161e;
+  --bg-elevated: #1f222e;
+
+  /* Aksen Emas (Royal Metallic Gold) */
+  --brand-gold: #D4AF37;
+  --brand-gold-light: #F3CA52;
+  --brand-gold-muted: #8A6D1F;
+
+  /* Warna Teks & Status */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --border-subtle: #262936;
+  --status-success: #10B981;
+  --status-warning: #F59E0B;
+  --status-danger: #EF4444;
+}
+
 @layer base {
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    background-color: var(--bg-obsidian);
+    color: var(--text-primary);
+    overflow-x: hidden;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading tracking-tight;
+}
+
+/* Efek Kaca Blur untuk FloatingGlassNavbar sesuai Wireframe */
+@layer utilities {
+  .glass-obsidian {
+    background-color: rgba(22, 22, 30, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 }

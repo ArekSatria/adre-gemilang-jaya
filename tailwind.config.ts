@@ -9,23 +9,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#09090B",
-        surface: "#18181B",
-        border: "#27272A",
-        foreground: "#FAFAFA",
-        muted: "#A1A1AA",
-        primary: {
-          DEFAULT: "#06B6D4",
-          hover: "#22D3EE",
-          foreground: "#09090B",
+        background: "var(--bg-obsidian)",
+        surface: "var(--bg-surface)",
+        elevated: "var(--bg-elevated)",
+        brand: {
+          DEFAULT: "var(--brand-gold)",
+          light: "var(--brand-gold-light)",
+          muted: "var(--brand-gold-muted)",
         },
+        foreground: "var(--text-primary)",
+        muted: "var(--text-secondary)",
+        subtle: "var(--border-subtle)",
+        success: "var(--status-success)",
+        warning: "var(--status-warning)",
+        danger: "var(--status-danger)",
       },
       fontFamily: {
-        heading: ["var(--font-oswald)", "sans-serif"],
-        body: ["var(--font-inter)", "sans-serif"],
+        display: ["var(--font-oswald)", "sans-serif"],
+        sans: ["var(--font-inter)", "sans-serif"],
+      },
+      maxWidth: {
+        "7xl": "1280px",
       },
     },
   },
   plugins: [],
 };
+
 export default config;
