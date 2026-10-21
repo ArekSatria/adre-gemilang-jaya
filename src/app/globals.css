@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   /* Warna Panduan Resmi PT Adre Gemilang Jaya */
@@ -22,6 +20,27 @@
   --status-danger: #EF4444;
 }
 
+@theme inline {
+  --color-background: var(--bg-obsidian);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+
+  --color-brand: var(--brand-gold);
+  --color-brand-light: var(--brand-gold-light);
+  --color-brand-muted: var(--brand-gold-muted);
+
+  --color-foreground: var(--text-primary);
+  --color-muted: var(--text-secondary);
+  --color-subtle: var(--border-subtle);
+
+  --color-success: var(--status-success);
+  --color-warning: var(--status-warning);
+  --color-danger: var(--status-danger);
+
+  --font-display: var(--font-oswald), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+}
+
 @layer base {
   body {
     background-color: var(--bg-obsidian);
@@ -30,11 +49,17 @@
   }
 }
 
-/* Efek Kaca Blur untuk FloatingGlassNavbar sesuai Wireframe */
-@layer utilities {
-  .glass-obsidian {
-    background-color: rgba(22, 22, 30, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
+/* Utilitas Kaca Blur untuk FloatingGlassNavbar sesuai Wireframe */
+@utility glass-obsidian {
+  background-color: rgba(22, 22, 30, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility gold-ambient-glow {
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(212, 175, 55, 0.16) 0%,
+    rgba(22, 22, 30, 0) 70%
+  );
 }
