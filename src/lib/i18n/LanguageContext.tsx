@@ -92,6 +92,20 @@ export const DICTIONARY = {
         "Pencapaian resmi divisi pada turnamen tingkat nasional dan regional.",
       scheduleCta: "Lihat Jadwal Pertandingan →",
     },
+    matchesPage: {
+      title: "JADWAL & HASIL PERTANDINGAN",
+      subtitle:
+        "Agenda turnamen resmi serta rekapitulasi poin akhir skuad kompetitif PT Adre Gemilang Jaya.",
+      filterStatusAll: "Semua Status",
+      filterStatusUpcoming: "Akan Datang",
+      filterStatusCompleted: "Selesai",
+      filterGameAll: "Semua Divisi",
+      watchStream: "Tonton Siaran",
+      upcomingBadge: "UPCOMING",
+      emptyState:
+        "Tidak ada data pertandingan yang sesuai dengan filter pilihan Anda.",
+      pointsUnit: "PTS",
+    },
     footer: {
       description:
         "Badan hukum manajemen olahraga elektronik (esports) yang beroperasi sejak 2024 di Palembang & Jakarta. Fokus pada pembinaan skuad PUBG Mobile dan kemitraan komersial terukur.",
@@ -164,6 +178,19 @@ export const DICTIONARY = {
       achievementsSub:
         "Official competitive milestones across national and regional leagues.",
       scheduleCta: "View Match Schedule →",
+    },
+    matchesPage: {
+      title: "MATCH SCHEDULE & RESULTS",
+      subtitle:
+        "Official tournament fixtures and final standings for PT Adre Gemilang Jaya competitive divisions.",
+      filterStatusAll: "All Matches",
+      filterStatusUpcoming: "Upcoming",
+      filterStatusCompleted: "Completed",
+      filterGameAll: "All Divisions",
+      watchStream: "Watch Stream",
+      upcomingBadge: "UPCOMING",
+      emptyState: "No matches found matching your selected filter criteria.",
+      pointsUnit: "PTS",
     },
     footer: {
       description:
