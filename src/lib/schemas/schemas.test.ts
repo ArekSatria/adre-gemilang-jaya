@@ -7,8 +7,13 @@ import {
 import * as mockData from "../api/mock-data";
 import { filterMatches, formatMatchScoreDisplay } from "../utils/match-helpers";
 import { filterNewsByCategory } from "../utils/news-helpers";
+import {
+  CORPORATE_PARTNERS_DATA,
+  CORPORATE_MILESTONES,
+  validateContactSubmission,
+} from "../utils/corporate-helpers";
 
-describe("Sprint 1 s/d Sprint 5 - Schema, Roster, Matches & News Validation", () => {
+describe("Sprint 1 s/d Sprint 6 - Full Frontend Unit Test Suite", () => {
   it("memvalidasi mockGlobalSettings sesuai kontrak API-01", () => {
     const parsed = GlobalSettingsSchema.safeParse(mockData.mockGlobalSettings);
     expect(parsed.success).toBe(true);
@@ -104,5 +109,36 @@ describe("Sprint 1 s/d Sprint 5 - Schema, Roster, Matches & News Validation", ()
     expect(sampleDetail.seoMeta.metaTitle).toContain(sampleCard.title);
     expect(sampleDetail.seoMeta.metaDescription.length).toBeGreaterThan(10);
     expect(sampleDetail.readingTimeMinutes).toBeGreaterThan(0);
+  });
+
+  it("memvalidasi data katalog mitra komersial dan tonggak sejarah korporasi (PBI-12 & PBI-13)", () => {
+    expect(CORPORATE_PARTNERS_DATA).toHaveLength(3);
+    expect(CORPORATE_MILESTONES.map((m) => m.year)).toEqual([
+      "2024",
+      "2025",
+      "2026",
+    ]);
+  });
+
+  it("memvalidasi skema formulir kemitraan bisnis berbasis Zod untuk input valid dan menolak input tidak valid (PBI-14)", () => {
+    const validSubmission = validateContactSubmission({
+      fullName: "Rizky Pratama",
+      companyName: "PT Nusantara Digital Sponsor",
+      email: "rizky@nusantaradigital.co.id",
+      inquiryType: "SPONSORSHIP",
+      message:
+        "Kami tertarik menjalin kolaborasi sponsorship jersey untuk musim kompetisi PMSL SEA 2026.",
+    });
+
+    const invalidSubmission = validateContactSubmission({
+      fullName: "A",
+      companyName: "",
+      email: "email-tidak-valid",
+      inquiryType: "SPONSORSHIP",
+      message: "Terlalu pendek",
+    });
+
+    expect(validSubmission.success).toBe(true);
+    expect(invalidSubmission.success).toBe(false);
   });
 });

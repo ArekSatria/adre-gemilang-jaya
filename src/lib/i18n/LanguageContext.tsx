@@ -118,6 +118,69 @@ export const DICTIONARY = {
       publishedBy: "Ditulis oleh",
       relatedHeading: "BERITA TERKAIT LAINNYA",
     },
+    partnersPage: {
+      title: "MITRA KOMERSIAL & SPONSOR",
+      subtitle:
+        "Kolaborasi strategis antara PT Adre Gemilang Jaya dan mitra korporasi dalam membangun ekosistem olahraga elektronik profesional yang terukur.",
+      visitPartner: "Kunjungi Situs Mitra",
+      valueHeading: "PROPOSISI NILAI KEMITRAAN",
+      valueSub: "Keunggulan kolaborasi merek bersama skuad kompetitif kami.",
+      ctaBannerTitle: "Buka Peluang Kolaborasi Strategis 2026/2027",
+      ctaBannerDesc:
+        "Hubungi tim komersial kami untuk mendapatkan dokumen Media Kit, demografi audiens, dan proposal kemitraan yang disesuaikan dengan target merek Anda.",
+      ctaButton: "Ajukan Proposal Kemitraan →",
+    },
+    aboutPage: {
+      title: "TENTANG PT ADRE GEMILANG JAYA",
+      subtitle:
+        "Manajemen olahraga elektronik berbadan hukum resmi yang berfokus pada prestasi kompetitif, tata kelola atlet profesional, dan integritas komersial.",
+      visionTitle: "VISI ORGANISASI",
+      visionText:
+        "Menjadi organisasi olahraga elektronik profesional terkemuka di Asia Tenggara yang mencetak atlet berprestasi tingkat dunia melalui manajemen berbasis sains olahraga dan tata kelola korporasi modern.",
+      missionTitle: "MISI STRATEGIS",
+      missions: [
+        "Membina skuad kompetitif PUBG Mobile secara terstruktur dengan dukungan staf pelatih dan analis data.",
+        "Membangun kemitraan komersial jangka panjang yang memberikan eksposur terukur bagi sponsor.",
+        "Menyediakan infrastruktur pelatihan berstandar tinggi di Palembang dan Jakarta.",
+      ],
+      milestonesHeading: "TONGGAK SEJARAH ORGANISASI",
+      milestonesSub:
+        "Perjalanan pertumbuhan PT Adre Gemilang Jaya sejak pendirian resmi.",
+      officesHeading: "LOKASI OPERASIONAL",
+      officesSub: "Pusat manajemen korporasi dan fasilitas pelatihan tim.",
+    },
+    contactPage: {
+      title: "KONTAK & KEMITRAAN BISNIS",
+      subtitle:
+        "Saluran komunikasi resmi manajemen PT Adre Gemilang Jaya untuk pengajuan sponsor, undangan turnamen, wawancara media, dan kolaborasi korporasi.",
+      directInfoHeading: "INFORMASI KONTAK LANGSUNG",
+      emailLabel: "Surel Resmi Kemitraan",
+      hqLabel: "Kantor Operasional",
+      responseSla: "Estimasi waktu respons manajemen: 1–2 hari kerja.",
+      formHeading: "FORMULIR PENGAJUAN KEMITRAAN & KONTAK",
+      fullNameLabel: "Nama Lengkap Pengirim",
+      fullNamePlaceholder: "Contoh: Budi Santoso",
+      companyLabel: "Nama Perusahaan / Instansi",
+      companyPlaceholder: "Contoh: PT Nusantara Digital",
+      emailInputLabel: "Alamat Email Bisnis",
+      emailPlaceholder: "nama@perusahaan.co.id",
+      inquiryTypeLabel: "Kategori Keperluan",
+      inquiryOptions: {
+        SPONSORSHIP: "Proposal Sponsorship & Brand Activation",
+        MEDIA: "Liputan Media & Hubungan Masyarakat (PR)",
+        TOURNAMENT: "Undangan Turnamen & Scrimmage Resmi",
+        GENERAL: "Pertanyaan Umum Korporasi",
+      },
+      messageLabel: "Rincian Pesan / Proposal Singkat",
+      messagePlaceholder:
+        "Tuliskan tujuan kolaborasi atau informasi yang Anda butuhkan (minimal 20 karakter)...",
+      submitButton: "Kirim Pesan Resmi",
+      submittingButton: "Mengirim Pesan...",
+      successTitle: "Pesan Anda Berhasil Diterima",
+      successDesc:
+        "Terima kasih telah menghubungi PT Adre Gemilang Jaya. Tim manajemen komersial kami akan meninjau pesan Anda dan membalas melalui email.",
+      sendAnotherBtn: "Kirim Pesan Lainnya",
+    },
     footer: {
       description:
         "Badan hukum manajemen olahraga elektronik (esports) yang beroperasi sejak 2024 di Palembang & Jakarta. Fokus pada pembinaan skuad PUBG Mobile dan kemitraan komersial terukur.",
@@ -215,6 +278,72 @@ export const DICTIONARY = {
       backToNews: "← Back to All News",
       publishedBy: "Written by",
       relatedHeading: "OTHER RELATED NEWS",
+    },
+    partnersPage: {
+      title: "COMMERCIAL PARTNERS & SPONSORS",
+      subtitle:
+        "Strategic collaborations between PT Adre Gemilang Jaya and corporate partners in building a measurable professional esports ecosystem.",
+      visitPartner: "Visit Partner Website",
+      valueHeading: "PARTNERSHIP VALUE PROPOSITION",
+      valueSub:
+        "Key brand advantages of collaborating with our competitive squad.",
+      ctaBannerTitle:
+        "Unlock Strategic Collaboration Opportunities for 2026/2027",
+      ctaBannerDesc:
+        "Contact our commercial team to request our official Media Kit, audience demographics, and tailored sponsorship proposals.",
+      ctaButton: "Submit Partnership Inquiry →",
+    },
+    aboutPage: {
+      title: "ABOUT PT ADRE GEMILANG JAYA",
+      subtitle:
+        "A legally incorporated esports management organization focused on competitive excellence, athlete governance, and commercial integrity.",
+      visionTitle: "CORPORATE VISION",
+      visionText:
+        "To become a leading professional esports organization in Southeast Asia, developing world-class athletes through sports science management and modern corporate governance.",
+      missionTitle: "STRATEGIC MISSIONS",
+      missions: [
+        "Develop our flagship PUBG Mobile squad systematically with dedicated coaching and data analyst staff.",
+        "Build long-term commercial partnerships delivering measurable brand exposure for sponsors.",
+        "Provide high-standard training facilities in Palembang and Jakarta.",
+      ],
+      milestonesHeading: "CORPORATE MILESTONES",
+      milestonesSub:
+        "Key growth stages of PT Adre Gemilang Jaya since official incorporation.",
+      officesHeading: "OPERATIONAL LOCATIONS",
+      officesSub:
+        "Corporate management headquarters and team training facilities.",
+    },
+    contactPage: {
+      title: "BUSINESS & PARTNERSHIP CONTACT",
+      subtitle:
+        "Official communication channel of PT Adre Gemilang Jaya for sponsorship proposals, tournament invitations, media inquiries, and corporate collaborations.",
+      directInfoHeading: "DIRECT CONTACT INFORMATION",
+      emailLabel: "Official Partnership Email",
+      hqLabel: "Operational Offices",
+      responseSla: "Estimated management response time: 1–2 business days.",
+      formHeading: "PARTNERSHIP & BUSINESS INQUIRY FORM",
+      fullNameLabel: "Sender Full Name",
+      fullNamePlaceholder: "e.g., Budi Santoso",
+      companyLabel: "Company / Organization Name",
+      companyPlaceholder: "e.g., Nusantara Digital Corp",
+      emailInputLabel: "Business Email Address",
+      emailPlaceholder: "name@company.com",
+      inquiryTypeLabel: "Inquiry Category",
+      inquiryOptions: {
+        SPONSORSHIP: "Sponsorship Proposal & Brand Activation",
+        MEDIA: "Media Coverage & Public Relations",
+        TOURNAMENT: "Tournament Invitation & Official Scrims",
+        GENERAL: "General Corporate Inquiry",
+      },
+      messageLabel: "Message / Proposal Summary",
+      messagePlaceholder:
+        "Describe your collaboration goals or inquiry details (minimum 20 characters)...",
+      submitButton: "Send Official Inquiry",
+      submittingButton: "Sending Inquiry...",
+      successTitle: "Your Inquiry Has Been Received",
+      successDesc:
+        "Thank you for contacting PT Adre Gemilang Jaya. Our commercial management team will review your message and respond via email.",
+      sendAnotherBtn: "Send Another Message",
     },
     footer: {
       description:
