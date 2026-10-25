@@ -42,11 +42,12 @@ export const DICTIONARY = {
       langLabel: "Bahasa",
     },
     hero: {
+      badge: "ORGANISASI ESPORTS PROFESIONAL",
       titleLine1: "SKUAD KOMPETITIF",
       titleHighlight: "PUBG MOBILE",
       titleLine2: "PT ADRE GEMILANG JAYA",
       description:
-        "Jakarta, kami mengelola 1 divisi utama PUBG Mobile dengan 4 pemain inti, 2 staf pelatih analis, dan rekam jejak Juara 1 PMNC Indonesia 2026.",
+        "Berbasis di Palembang dan Jakarta, kami mengelola 1 divisi utama PUBG Mobile dengan 4 pemain inti, 2 staf pelatih analis, dan rekam jejak Juara 1 PMNC Indonesia 2026.",
       primaryCta: "Lihat Roster PUBG Mobile",
       secondaryCta: "Jadwal PMSL SEA 2026",
       stats: [
@@ -58,7 +59,7 @@ export const DICTIONARY = {
       nextMatchHeader: "JADWAL TURNAMEN TERDEKAT",
       liveStreamBtn: "Tonton Siaran",
       activeDivisionHeader: "DIVISI AKTIF SAAT INI",
-      rosterStatus: "4 Pemain Inti • 2 Staf Pelatih",
+      rosterStatus: "4 Pemain Inti / 2 Staf Pelatih",
       viewRosterBtn: "Buka Profil Tim",
     },
     homeSections: {
@@ -71,9 +72,29 @@ export const DICTIONARY = {
       viewAllNews: "Semua Berita",
       readTime: "menit baca",
     },
+    teamsPage: {
+      catalogTitle: "DIVISI KOMPETITIF",
+      catalogSub:
+        "Daftar divisi olahraga elektronik resmi di bawah manajemen PT Adre Gemilang Jaya.",
+      activePersonnelLabel: "Personel Aktif",
+      openRosterCta: "Lihat Profil & Roster →",
+      expansionTitle: "Arsitektur Multi-Divisi Siap Ekspansi",
+      expansionDesc:
+        "Sistem manajemen divisi PT Adre Gemilang Jaya dirancang dinamis. Penambahan divisi baru pada masa mendatang akan otomatis tampil pada katalog ini melalui sinkronisasi CMS.",
+      backToCatalog: "← Kembali ke Katalog Divisi",
+      playersHeading: "SKUAD PEMAIN INTI",
+      playersSub: "Empat atlet utama yang berlaga di rotasi turnamen resmi.",
+      staffHeading: "STAF KEPELATIHAN & ANALIS",
+      staffSub:
+        "Tim perumus strategi, bedah peta permainan, dan evaluasi performa.",
+      achievementsHeading: "REKAM JEJAK PRESTASI",
+      achievementsSub:
+        "Pencapaian resmi divisi pada turnamen tingkat nasional dan regional.",
+      scheduleCta: "Lihat Jadwal Pertandingan →",
+    },
     footer: {
       description:
-        "Badan hukum manajemen olahraga elektronik (esports) yang beroperasi sejak 2024 di Jakarta. Fokus pada pembinaan skuad PUBG Mobile dan kemitraan komersial terukur.",
+        "Badan hukum manajemen olahraga elektronik (esports) yang beroperasi sejak 2024 di Palembang & Jakarta. Fokus pada pembinaan skuad PUBG Mobile dan kemitraan komersial terukur.",
       navHeading: "Navigasi Portal",
       divisionHeading: "Divisi Kompetitif",
       divisionPrefix: "Skuad",
@@ -91,7 +112,7 @@ export const DICTIONARY = {
       langLabel: "Language",
     },
     hero: {
-      badge: "PROFESSIONAL ESPORTS ORGANIZATION — EST. 2024",
+      badge: "PROFESSIONAL ESPORTS ORGANIZATION",
       titleLine1: "COMPETITIVE",
       titleHighlight: "PUBG MOBILE",
       titleLine2: "ROSTER BY PT ADRE GEMILANG JAYA",
@@ -108,7 +129,7 @@ export const DICTIONARY = {
       nextMatchHeader: "UPCOMING TOURNAMENT MATCH",
       liveStreamBtn: "Watch Stream",
       activeDivisionHeader: "ACTIVE COMPETITIVE DIVISION",
-      rosterStatus: "4 Core Players • 2 Coaching Staff",
+      rosterStatus: "4 Core Players / 2 Coaching Staff",
       viewRosterBtn: "View Team Profile",
     },
     homeSections: {
@@ -123,9 +144,30 @@ export const DICTIONARY = {
       viewAllNews: "All News",
       readTime: "min read",
     },
+    teamsPage: {
+      catalogTitle: "COMPETITIVE DIVISIONS",
+      catalogSub:
+        "Official esports divisions managed under PT Adre Gemilang Jaya.",
+      activePersonnelLabel: "Active Personnel",
+      openRosterCta: "View Profile & Roster →",
+      expansionTitle: "Scalable Multi-Division Architecture",
+      expansionDesc:
+        "PT Adre Gemilang Jaya's division management system is built dynamically. Future game divisions added via the CMS will automatically appear in this catalog.",
+      backToCatalog: "← Back to Divisions Catalog",
+      playersHeading: "CORE PLAYER ROSTER",
+      playersSub:
+        "Four starting athletes competing in official tournament rotations.",
+      staffHeading: "COACHING & ANALYST STAFF",
+      staffSub:
+        "Tactical masterminds behind map rotations and performance review.",
+      achievementsHeading: "TOURNAMENT ACHIEVEMENTS",
+      achievementsSub:
+        "Official competitive milestones across national and regional leagues.",
+      scheduleCta: "View Match Schedule →",
+    },
     footer: {
       description:
-        "Registered esports management company operating since 2024 in Jakarta. Dedicated to professional PUBG Mobile athlete development and measurable brand partnerships.",
+        "Registered esports management company operating since 2024 in Palembang & Jakarta. Dedicated to professional PUBG Mobile athlete development and measurable brand partnerships.",
       navHeading: "Portal Navigation",
       divisionHeading: "Active Division",
       divisionPrefix: "Squad",
@@ -138,7 +180,6 @@ export const DICTIONARY = {
   },
 };
 
-// Definisikan tipe kamus secara eksplisit agar kompatibel dengan union type locale
 export type DictionaryType = (typeof DICTIONARY)["id"];
 
 interface LanguageContextValue {

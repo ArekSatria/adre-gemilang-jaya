@@ -17,8 +17,9 @@ export function BrandLogo({ logoUrl, height = 46 }: BrandLogoProps) {
       <Image
         src={resolvedSrc}
         alt="PT Adre Gemilang Jaya"
-        width={160}
-        height={height}
+        width={0}
+        height={0}
+        sizes="200px"
         className="object-contain drop-shadow-[0_2px_8px_rgba(212,175,55,0.25)]"
         style={{ height: `${height}px`, width: "auto" }}
         onError={() => setImgError(true)}
