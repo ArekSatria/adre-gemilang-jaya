@@ -106,6 +106,18 @@ export const DICTIONARY = {
         "Tidak ada data pertandingan yang sesuai dengan filter pilihan Anda.",
       pointsUnit: "PTS",
     },
+    newsPage: {
+      title: "BERITA & RILIS RESMI",
+      subtitle:
+        "Pusat informasi resmi seputar perkembangan roster PUBG Mobile, laporan hasil turnamen, dan agenda korporasi PT Adre Gemilang Jaya.",
+      filterAllCategories: "Semua Kategori",
+      readMore: "Baca artikel →",
+      readTimeUnit: "menit baca",
+      emptyState: "Belum ada artikel berita pada kategori ini.",
+      backToNews: "← Kembali ke Semua Berita",
+      publishedBy: "Ditulis oleh",
+      relatedHeading: "BERITA TERKAIT LAINNYA",
+    },
     footer: {
       description:
         "Badan hukum manajemen olahraga elektronik (esports) yang beroperasi sejak 2024 di Palembang & Jakarta. Fokus pada pembinaan skuad PUBG Mobile dan kemitraan komersial terukur.",
@@ -191,6 +203,18 @@ export const DICTIONARY = {
       upcomingBadge: "UPCOMING",
       emptyState: "No matches found matching your selected filter criteria.",
       pointsUnit: "PTS",
+    },
+    newsPage: {
+      title: "OFFICIAL NEWS & RELEASES",
+      subtitle:
+        "Official press releases covering PUBG Mobile roster updates, tournament recaps, and corporate initiatives by PT Adre Gemilang Jaya.",
+      filterAllCategories: "All Categories",
+      readMore: "Read article →",
+      readTimeUnit: "min read",
+      emptyState: "No news articles available in this category yet.",
+      backToNews: "← Back to All News",
+      publishedBy: "Written by",
+      relatedHeading: "OTHER RELATED NEWS",
     },
     footer: {
       description:
