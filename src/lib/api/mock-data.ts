@@ -1,461 +1,379 @@
 import type {
   GlobalSettings,
+  HomePayload,
   DivisionSummary,
   DivisionDetail,
   MatchesPayload,
-  NewsCatalogPayload,
-  NewsDetail,
-  PartnerItem,
-  CompanyProfile,
-  HomePayload,
 } from "@/lib/schemas";
 
 export const mockGlobalSettings: GlobalSettings = {
   siteName: "PT Adre Gemilang Jaya",
-  logoUrl: null,
-  tagline: "Organisasi Manajemen Esports Profesional Indonesia",
-  activeDivisionsNav: [{ name: "PUBG Mobile", slug: "pubg-mobile" }],
+  logoUrl: "/images/logo-adre.png",
+  tagline: "Organisasi Esports Jakarta Indonesia",
+  activeDivisionsNav: [
+    {
+      name: "PUBG Mobile",
+      slug: "pubg-mobile",
+    },
+  ],
   contactQuick: {
-    businessEmail: "business@adregemilangjaya.com",
-    partnershipEmail: "partnership@adregemilangjaya.com",
-    addressShort: "Jakarta, Indonesia",
+    businessEmail: "contact@adregemilang.co.id",
+    partnershipEmail: "partnership@adregemilang.co.id",
+    addressShort: "SCBD, Jakarta Selatan, DKI Jakarta, Indonesia",
   },
   socials: {
-    instagram: "https://instagram.com",
-    youtube: "https://youtube.com",
-    tiktok: "https://tiktok.com",
-    facebook: "https://facebook.com",
-    x: "https://x.com",
+    instagram: "https://instagram.com/adreesports",
+    youtube: "https://youtube.com/@adreesports",
+    tiktok: "https://tiktok.com/@adreesports",
+    x: "https://x.com/adreesports",
   },
 };
 
-export const mockDivisions: DivisionSummary[] = [
+export const mockDivisionsCatalog: DivisionSummary[] = [
   {
-    id: "div-pubgm",
+    id: "div-01",
     name: "PUBG Mobile",
     slug: "pubg-mobile",
     shortCode: "PUBGM",
-    bannerUrl: null,
-    logoUrl: null,
-    description:
-      "Divisi utama PT Adre Gemilang Jaya yang berkompetisi di turnamen profesional tingkat nasional dan Asia Tenggara.",
-    isActive: true,
-    activeRosterCount: 5,
+    gameTitle: "PUBG Mobile",
+    bannerImageUrl: null,
+    activeRosterCount: 7,
+    tagline: "Tim PUBG Mobile PT Adre Gemilang Jaya yang berbasis di Jakarta.",
   },
 ];
 
+export const mockActiveDivisions = mockDivisionsCatalog;
+
 export const mockDivisionDetails: Record<string, DivisionDetail> = {
   "pubg-mobile": {
-    ...mockDivisions[0],
+    id: "div-01",
+    name: "PUBG Mobile",
+    slug: "pubg-mobile",
+    shortCode: "PUBGM",
+    gameTitle: "PUBG Mobile",
+    bannerImageUrl: null,
+    activeRosterCount: 7,
+    tagline: "Tim PUBG Mobile PT Adre Gemilang Jaya yang berbasis di Jakarta.",
+    description:
+      "Divisi PUBG Mobile PT Adre Gemilang Jaya di Jakarta yang diperkuat oleh 4 pemain inti, 1 manajer tim, serta 2 staf pelatih dan analis.",
     roster: [
       {
-        id: "plr-1",
-        ign: "ADRExValkyrie",
-        fullName: "M. Rizky Pratama",
+        id: "rst-01",
+        ign: "ADRE Raptor",
+        fullName: "Bagas Pratama",
         role: "IGL",
         roleType: "PLAYER",
+        countryCode: "ID",
         photoUrl: null,
-        displayOrder: 1,
-        socials: {
-          instagram: "https://instagram.com",
-          youtube: "https://youtube.com",
-        },
+        joinDate: "2024-03-10",
       },
       {
-        id: "plr-2",
-        ign: "ADRExNemesis",
-        fullName: "Bagas Adi Saputra",
+        id: "rst-02",
+        ign: "ADRE Blaze",
+        fullName: "Rizky Ramadhan",
         role: "RUSHER",
         roleType: "PLAYER",
+        countryCode: "ID",
         photoUrl: null,
-        displayOrder: 2,
-        socials: {
-          instagram: "https://instagram.com",
-          tiktok: "https://tiktok.com",
-        },
+        joinDate: "2024-03-10",
       },
       {
-        id: "plr-3",
-        ign: "ADRExAegis",
-        fullName: "Fajar Ramadhan",
+        id: "rst-03",
+        ign: "ADRE Aegis",
+        fullName: "Fajar Nugroho",
         role: "SUPPORT",
         roleType: "PLAYER",
+        countryCode: "ID",
         photoUrl: null,
-        displayOrder: 3,
-        socials: { instagram: "https://instagram.com" },
+        joinDate: "2024-06-15",
       },
       {
-        id: "plr-4",
-        ign: "ADRExHawkeye",
-        fullName: "Kevin Wijaya",
+        id: "rst-04",
+        ign: "ADRE Hawk",
+        fullName: "Ilham Saputra",
         role: "SCOUT",
         roleType: "PLAYER",
+        countryCode: "ID",
         photoUrl: null,
-        displayOrder: 4,
-        socials: { instagram: "https://instagram.com" },
+        joinDate: "2024-08-01",
       },
       {
-        id: "stf-1",
-        ign: "ADRExTactix",
-        fullName: "Hendra Kusuma",
-        role: "Coach",
+        id: "rst-05",
+        ign: "ADRE Valkyrie",
+        fullName: "Dimas Prakoso",
+        role: "MANAGER",
         roleType: "STAFF",
+        countryCode: "ID",
         photoUrl: null,
-        displayOrder: 1,
-        socials: { instagram: "https://instagram.com" },
+        joinDate: "2024-04-01",
       },
       {
-        id: "stf-2",
-        ign: "ADRExCipher",
-        fullName: "Rian Firmansyah",
-        role: "Analyst",
+        id: "rst-06",
+        ign: "ADRE Tactix",
+        fullName: "Hendra Wijaya",
+        role: "COACH",
         roleType: "STAFF",
+        countryCode: "ID",
         photoUrl: null,
-        displayOrder: 2,
-        socials: { instagram: "https://instagram.com" },
+        joinDate: "2024-03-10",
+      },
+      {
+        id: "rst-07",
+        ign: "ADRE Cipher",
+        fullName: "Kevin Santoso",
+        role: "ANALYST",
+        roleType: "STAFF",
+        countryCode: "ID",
+        photoUrl: null,
+        joinDate: "2025-01-12",
       },
     ],
     achievements: [
       {
-        id: "ach-1",
-        year: 2026,
-        tournamentName: "PUBG Mobile National Championship (PMNC) Indonesia",
-        placementLabel: "Juara 1",
+        id: "ach-01",
+        title: "PUBG Mobile National Championship (PMNC) Indonesia 2026",
+        placement: "Juara 1 (148 Poin)",
+        year: "2026",
       },
       {
-        id: "ach-2",
-        year: 2025,
-        tournamentName: "SEA Esports Pro Invitational Fall",
-        placementLabel: "Juara 2",
+        id: "ach-02",
+        title: "SEA Esports Pro Invitational Fall 2025",
+        placement: "Juara 2",
+        year: "2025",
       },
       {
-        id: "ach-3",
-        year: 2025,
-        tournamentName: "Piala Presiden Esports Regional Qualifier",
-        placementLabel: "Juara 1",
+        id: "ach-03",
+        title: "Jakarta Battle Royale Cup 2025",
+        placement: "Juara 1",
+        year: "2025",
       },
     ],
   },
 };
 
 export const mockMatchesPayload: MatchesPayload = {
-  availableGames: [{ name: "PUBG Mobile", slug: "pubg-mobile" }],
   items: [
     {
       id: "mtc-101",
+      tournamentName: "PUBG Mobile Super League (PMSL) SEA Fall 2026",
+      stage: "Minggu 1 Hari 1 Babak Liga",
+      scheduledAt: "2026-11-15T17:00:00.000Z",
       status: "UPCOMING",
-      matchFormat: "BATTLE_ROYALE",
-      scheduledAt: "2026-11-15T12:00:00Z",
-      tournamentName: "PMSL SEA Fall 2026",
-      tournamentStage: "Grand Finals Day 1 (6 Matches)",
-      division: { name: "PUBG Mobile", slug: "pubg-mobile" },
-      ourTeamName: "ADRE Esports",
-      opponentName: null,
-      result: null,
-      streamUrl: "https://youtube.com",
+      formatType: "BATTLE_ROYALE",
+      division: {
+        name: "PUBG Mobile",
+        slug: "pubg-mobile",
+        shortCode: "PUBGM",
+      },
+      streamUrl: "https://youtube.com/@adreesports",
+      resultBattleRoyale: null,
     },
     {
       id: "mtc-102",
+      tournamentName: "PUBG Mobile Super League (PMSL) SEA Fall 2026",
+      stage: "Minggu 1 Hari 2 Babak Liga",
+      scheduledAt: "2026-11-16T17:00:00.000Z",
       status: "UPCOMING",
-      matchFormat: "BATTLE_ROYALE",
-      scheduledAt: "2026-11-16T12:00:00Z",
-      tournamentName: "PMSL SEA Fall 2026",
-      tournamentStage: "Grand Finals Day 2 (6 Matches)",
-      division: { name: "PUBG Mobile", slug: "pubg-mobile" },
-      ourTeamName: "ADRE Esports",
-      opponentName: null,
-      result: null,
-      streamUrl: "https://youtube.com",
+      formatType: "BATTLE_ROYALE",
+      division: {
+        name: "PUBG Mobile",
+        slug: "pubg-mobile",
+        shortCode: "PUBGM",
+      },
+      streamUrl: "https://youtube.com/@adreesports",
+      resultBattleRoyale: null,
     },
     {
       id: "mtc-098",
+      tournamentName: "PMNC Indonesia 2026 Grand Finals",
+      stage: "Hari 3 Babak Final",
+      scheduledAt: "2026-09-20T16:00:00.000Z",
       status: "COMPLETED",
-      matchFormat: "BATTLE_ROYALE",
-      scheduledAt: "2026-10-18T12:00:00Z",
-      tournamentName: "PMNC Indonesia 2026",
-      tournamentStage: "Final Stage Matchday 3",
-      division: { name: "PUBG Mobile", slug: "pubg-mobile" },
-      ourTeamName: "ADRE Esports",
-      opponentName: null,
-      result: {
-        placementBadge: "#1 WWCD",
+      formatType: "BATTLE_ROYALE",
+      division: {
+        name: "PUBG Mobile",
+        slug: "pubg-mobile",
+        shortCode: "PUBGM",
+      },
+      streamUrl: "https://youtube.com/@adreesports",
+      resultBattleRoyale: {
+        placement: 1,
+        placementLabel: "#1 WWCD",
         totalPoints: 148,
-        ourScore: null,
-        opponentScore: null,
-        outcome: "WIN",
+        wwcdCount: 4,
       },
-      streamUrl: null,
-    },
-    {
-      id: "mtc-097",
-      status: "COMPLETED",
-      matchFormat: "BATTLE_ROYALE",
-      scheduledAt: "2026-10-17T12:00:00Z",
-      tournamentName: "PMNC Indonesia 2026",
-      tournamentStage: "Final Stage Matchday 2",
-      division: { name: "PUBG Mobile", slug: "pubg-mobile" },
-      ourTeamName: "ADRE Esports",
-      opponentName: null,
-      result: {
-        placementBadge: "#2 PLACE",
-        totalPoints: 96,
-        ourScore: null,
-        opponentScore: null,
-        outcome: "TOP3",
-      },
-      streamUrl: null,
     },
     {
       id: "mtc-095",
+      tournamentName: "PMNC Indonesia 2026 Babak Kualifikasi Akhir",
+      stage: "Hari 2 Grup A dan Grup B",
+      scheduledAt: "2026-09-05T16:00:00.000Z",
       status: "COMPLETED",
-      matchFormat: "BATTLE_ROYALE",
-      scheduledAt: "2026-09-20T11:30:00Z",
-      tournamentName: "Piala Presiden Esports 2026",
-      tournamentStage: "Closed Qualifier Finals",
-      division: { name: "PUBG Mobile", slug: "pubg-mobile" },
-      ourTeamName: "ADRE Esports",
-      opponentName: null,
-      result: {
-        placementBadge: "#1 WWCD",
-        totalPoints: 132,
-        ourScore: null,
-        opponentScore: null,
-        outcome: "WIN",
+      formatType: "BATTLE_ROYALE",
+      division: {
+        name: "PUBG Mobile",
+        slug: "pubg-mobile",
+        shortCode: "PUBGM",
       },
-      streamUrl: null,
+      streamUrl: "https://youtube.com/@adreesports",
+      resultBattleRoyale: {
+        placement: 2,
+        placementLabel: "#2 Place",
+        totalPoints: 126,
+        wwcdCount: 2,
+      },
     },
   ],
 };
 
-export const mockNewsList: NewsDetail[] = [
+export const mockNewsItems = [
   {
-    id: "nws-1",
-    title:
-      "PT Adre Gemilang Jaya Resmi Umumkan Roster Utama PUBG Mobile Musim Kompetisi 2026",
-    slug: "pt-adre-gemilang-jaya-resmi-umumkan-roster-utama-pubg-mobile-2026",
+    id: "nws-01",
+    title: "ADRE Esports Raih Juara 1 Grand Finals PMNC Indonesia 2026",
+    slug: "adre-esports-juara-kualifikasi-pmnc-2026",
     excerpt:
-      "Menghadapi kalender turnamen nasional dan Asia Tenggara, manajemen resmi memperkenalkan empat pemain inti beserta jajaran staf pelatih.",
-    contentHtml:
-      "<p><strong>PT Adre Gemilang Jaya</strong> resmi memperkenalkan susunan roster divisi PUBG Mobile untuk mengarungi musim kompetisi 2026. Langkah strategis ini merupakan bagian dari komitmen manajemen dalam membangun ekosistem atlet esports profesional yang berdaya saing tinggi.</p><h2>Fokus Persiapan Turnamen Tingkat Nasional</h2><p>Di bawah arahan pelatih kepala ADRExTactix, skuad ini telah menjalani pemusatan latihan intensif guna memperkuat koordinasi rotasi dan konsistensi poin di setiap peta pertandingan.</p>",
+      "Tim PUBG Mobile PT Adre Gemilang Jaya mengamankan gelar juara nasional dengan perolehan 148 poin.",
     coverImageUrl: null,
-    coverImageAlt: "Skuad PUBG Mobile PT Adre Gemilang Jaya",
+    coverImageAlt: "ADRE Esports Juara 1 PMNC Indonesia 2026",
     isFeatured: true,
-    publishedAt: "2026-10-15T09:00:00Z",
-    readingTimeMinutes: 3,
-    category: { name: "Pengumuman", slug: "pengumuman" },
-    division: { name: "PUBG Mobile", slug: "pubg-mobile" },
-    author: { name: "Tim Media ADRE", avatarUrl: null },
-    seo: {
-      metaTitle: "Roster Resmi PUBG Mobile PT Adre Gemilang Jaya 2026",
-      metaDescription:
-        "Susunan pemain dan pelatih divisi PUBG Mobile PT Adre Gemilang Jaya.",
-      ogImageUrl: null,
-    },
-    relatedNews: [],
-  },
-  {
-    id: "nws-2",
-    title:
-      "Raih Winner Winner Chicken Dinner, ADRE Esports Puncaki Klasemen Kualifikasi Nasional",
-    slug: "raih-wwcd-adre-esports-puncaki-klasemen-kualifikasi-nasional",
-    excerpt:
-      "Penampilan impresif ditunjukkan oleh divisi PUBG Mobile dengan mengoleksi total 148 poin pada babak final akhir pekan lalu.",
-    contentHtml:
-      "<p>Divisi PUBG Mobile PT Adre Gemilang Jaya berhasil mengamankan posisi puncak klasemen setelah mencatatkan tiga kali Winner Winner Chicken Dinner (WWCD).</p>",
-    coverImageUrl: null,
-    coverImageAlt: "Selebrasi kemenangan tim ADRE Esports",
-    isFeatured: false,
-    publishedAt: "2026-10-19T14:30:00Z",
+    publishedAt: "2026-09-21T09:00:00.000Z",
     readingTimeMinutes: 4,
-    category: { name: "Hasil Turnamen", slug: "hasil-turnamen" },
-    division: { name: "PUBG Mobile", slug: "pubg-mobile" },
-    author: { name: "Tim Media ADRE", avatarUrl: null },
-    seo: {
-      metaTitle: "ADRE Esports Puncaki Klasemen Kualifikasi Nasional",
-      metaDescription:
-        "Rekapitulasi hasil pertandingan divisi PUBG Mobile PT Adre Gemilang Jaya.",
-      ogImageUrl: null,
+    category: {
+      name: "Turnamen",
+      slug: "turnamen",
     },
-    relatedNews: [],
   },
   {
-    id: "nws-3",
-    title:
-      "Membangun Kemitraan Strategis di Industri Esports Bersama PT Adre Gemilang Jaya",
-    slug: "membangun-kemitraan-strategis-di-industri-esports-bersama-pt-adre",
+    id: "nws-02",
+    title: "Persiapan Skuad PUBG Mobile Menuju PMSL SEA Fall 2026",
+    slug: "persiapan-intensif-skuad-pubgm-menuju-pmsl-sea-2026",
     excerpt:
-      "Keterbukaan kolaborasi komersial dan eksposur audiens digital generasi muda melalui manajemen tim yang terstruktur.",
-    contentHtml:
-      "<p>PT Adre Gemilang Jaya membuka peluang kolaborasi strategis bagi mitra korporasi dan sponsor yang ingin menjangkau komunitas penggemar esports di Indonesia.</p>",
+      "Manajemen dan staf pelatih di Jakarta mengadakan latihan rutin untuk menghadapi turnamen tingkat Asia Tenggara.",
     coverImageUrl: null,
-    coverImageAlt: "Kolaborasi strategis PT Adre Gemilang Jaya",
+    coverImageAlt: "Latihan Skuad PUBG Mobile ADRE di Jakarta",
     isFeatured: false,
-    publishedAt: "2026-10-21T10:00:00Z",
+    publishedAt: "2026-10-02T10:30:00.000Z",
     readingTimeMinutes: 3,
-    category: { name: "Korporasi", slug: "korporasi" },
-    division: null,
-    author: { name: "Manajemen Korporasi", avatarUrl: null },
-    seo: {
-      metaTitle: "Kemitraan Strategis Esports PT Adre Gemilang Jaya",
-      metaDescription:
-        "Peluang kerja sama sponsor dan mitra komersial PT Adre Gemilang Jaya.",
-      ogImageUrl: null,
+    category: {
+      name: "Turnamen",
+      slug: "turnamen",
     },
-    relatedNews: [],
+  },
+  {
+    id: "nws-03",
+    title: "Pengumuman Kerja Sama Sponsor dan Kegiatan Komunitas 2026",
+    slug: "ekspansi-kemitraan-komersial-adre-gemilang-jaya-2026",
+    excerpt:
+      "PT Adre Gemilang Jaya menjalin kolaborasi baru dan mengadakan acara komunitas PUBG Mobile di Jakarta.",
+    coverImageUrl: null,
+    coverImageAlt: "Kerja Sama Sponsor PT Adre Gemilang Jaya Jakarta",
+    isFeatured: false,
+    publishedAt: "2026-10-10T08:15:00.000Z",
+    readingTimeMinutes: 5,
+    category: {
+      name: "Pengumuman",
+      slug: "pengumuman",
+    },
   },
 ];
 
-export const mockNewsCatalogPayload: NewsCatalogPayload = {
+export const mockNewsCatalog = {
   categories: [
+    { name: "Turnamen", slug: "turnamen" },
     { name: "Pengumuman", slug: "pengumuman" },
-    { name: "Hasil Turnamen", slug: "hasil-turnamen" },
-    { name: "Korporasi", slug: "korporasi" },
   ],
-  featured: mockNewsList[0],
-  items: mockNewsList,
+  items: mockNewsItems,
 };
 
-export const mockPartners: PartnerItem[] = [
-  {
-    id: "prt-1",
-    name: "Mitra Utama Korporasi",
-    tier: "PRINCIPAL",
-    logoUrl: null,
-    description:
-      "Mitra strategis utama dalam mendukung infrastruktur pelatihan dan pengembangan atlet esports profesional PT Adre Gemilang Jaya.",
-    websiteUrl: "https://example.com",
-    displayOrder: 1,
-  },
-  {
-    id: "prt-2",
-    name: "Mitra Perangkat Gaming Resmi",
-    tier: "OFFICIAL",
-    logoUrl: null,
-    description:
-      "Penyedia perangkat keras kompetisi berkinerja tinggi untuk mendukung performa skuad PUBG Mobile di setiap turnamen.",
-    websiteUrl: "https://example.com",
-    displayOrder: 2,
-  },
-  {
-    id: "prt-3",
-    name: "Mitra Apparel & Seragam Kompetisi",
-    tier: "SUPPLIER",
-    logoUrl: null,
-    description:
-      "Mitra penyedia jersey tanding resmi dengan material ergonomis bagi seluruh divisi aktif PT Adre Gemilang Jaya.",
-    websiteUrl: "https://example.com",
-    displayOrder: 3,
-  },
-];
+export const mockNewsListPayload = mockNewsCatalog;
 
-export const mockCompanyProfile: CompanyProfile = {
-  companyName: "PT Adre Gemilang Jaya",
-  aboutHtml:
-    "<p><strong>PT Adre Gemilang Jaya</strong> adalah perusahaan manajemen olahraga elektronik (esports) profesional di Indonesia yang berfokus pada pembinaan talenta kompetitif, pengelolaan divisi tim berstandar industri, serta penciptaan nilai komersial yang berkelanjutan bagi mitra strategis.</p><p>Berawal dari pembentukan skuad kompetitif PUBG Mobile, organisasi kami dirancang dengan fondasi manajemen modern yang siap berekspansi ke berbagai judul permainan kompetitif nasional maupun internasional.</p>",
-  companyImageUrl: null,
-  vision:
-    "Menjadi organisasi manajemen esports profesional yang paling kredibel, berprestasi, dan bernilai tinggi di Asia Tenggara.",
-  missions: [
-    "Membina atlet esports profesional melalui sistem pelatihan terstruktur, analisis data, dan dukungan staf ahli.",
-    "Membangun ekosistem kemitraan komersial yang transparan dan berdampak tinggi bagi sponsor.",
-    "Menghadirkan tayangan serta informasi kompetitif yang inspiratif bagi komunitas penggemar esports.",
-  ],
-  coreValues: [
-    {
-      id: "val-1",
-      title: "Integritas & Sportivitas",
-      description:
-        "Menjunjung tinggi kejujuran dan etika kompetisi di setiap turnamen resmi.",
-      iconName: "shield",
+export const mockNewsDetailsBySlug: Record<
+  string,
+  (typeof mockNewsItems)[number] & {
+    contentHtml: string;
+    author: { name: string; avatarUrl: string | null };
+    relatedNews: typeof mockNewsItems;
+  }
+> = {
+  "adre-esports-juara-kualifikasi-pmnc-2026": {
+    ...mockNewsItems[0],
+    contentHtml:
+      "<p>Tim PUBG Mobile PT Adre Gemilang Jaya berhasil meraih Juara 1 pada babak Grand Finals PUBG Mobile National Championship (PMNC) Indonesia 2026 dengan total 148 poin.</p><h3>Jalannya Pertandingan</h3><p>Bersama kapten tim, manajer, dan staf pelatih di Jakarta, para pemain tampil konsisten sejak hari pertama hingga memastikan tempat di turnamen PMSL SEA Fall 2026.</p>",
+    author: {
+      name: "Tim Media PT Adre Gemilang Jaya",
+      avatarUrl: null,
     },
-    {
-      id: "val-2",
-      title: "Mentalitas Juara",
-      description:
-        "Berorientasi pada pencapaian prestasi tertinggi melalui evaluasi disiplin.",
-      iconName: "trophy",
+    relatedNews: [mockNewsItems[1], mockNewsItems[2]],
+  },
+  "persiapan-intensif-skuad-pubgm-menuju-pmsl-sea-2026": {
+    ...mockNewsItems[1],
+    contentHtml:
+      "<p>Menjelang dimulainya PUBG Mobile Super League (PMSL) SEA Fall 2026, PT Adre Gemilang Jaya menambah porsi latihan tim di fasilitas latihan Jakarta.</p><h3>Evaluasi Strategi</h3><p>Latihan difokuskan pada koordinasi antar pemain inti serta pembahasan rekaman pertandingan bersama manajer dan analis tim.</p>",
+    author: {
+      name: "Tim Media PT Adre Gemilang Jaya",
+      avatarUrl: null,
     },
-    {
-      id: "val-3",
-      title: "Adaptasi & Inovasi",
-      description:
-        "Responsif terhadap perkembangan meta permainan dan teknologi industri digital.",
-      iconName: "zap",
+    relatedNews: [mockNewsItems[0], mockNewsItems[2]],
+  },
+  "ekspansi-kemitraan-komersial-adre-gemilang-jaya-2026": {
+    ...mockNewsItems[2],
+    contentHtml:
+      "<p>PT Adre Gemilang Jaya meresmikan rangkaian program bersama sponsor dan acara temu komunitas penggemar esports di Jakarta untuk musim kompetisi 2026.</p><h3>Dukungan Mitra</h3><p>Bersama mitra perangkat gaming dan apparel resmi, tim PUBG Mobile siap berlaga di berbagai turnamen resmi tahun ini.</p>",
+    author: {
+      name: "Tim Media PT Adre Gemilang Jaya",
+      avatarUrl: null,
     },
-    {
-      id: "val-4",
-      title: "Sinergi Kemitraan",
-      description:
-        "Tumbuh bersama komunitas, pemain, dan mitra sponsor secara berkelanjutan.",
-      iconName: "users",
-    },
-  ],
-  milestones: [
-    {
-      year: 2026,
-      title: "Peluncuran Portal Digital Resmi & Dominasi Divisi PUBG Mobile",
-      description:
-        "Meraih gelar juara nasional PMNC dan meluncurkan ekosistem website company profile berbasis arsitektur Headless CMS.",
-    },
-    {
-      year: 2025,
-      title: "Akselerasi Kompetitif & Akuisisi Talenta",
-      description:
-        "Memperkuat struktur kepelatihan divisi PUBG Mobile dan menembus babak final turnamen tingkat Asia Tenggara.",
-    },
-    {
-      year: 2024,
-      title: "Pendirian Badan Hukum PT Adre Gemilang Jaya",
-      description:
-        "Peresmian entitas korporasi dan peletakan fondasi manajemen organisasi esports profesional.",
-    },
-  ],
-  contact: {
-    businessEmail: "business@adregemilangjaya.com",
-    partnershipEmail: "partnership@adregemilangjaya.com",
-    officeAddress: "Kantor Manajemen PT Adre Gemilang Jaya, Indonesia",
-    mapEmbedUrl: null,
-    socials: mockGlobalSettings.socials,
+    relatedNews: [mockNewsItems[0], mockNewsItems[1]],
   },
 };
+
+export const mockNewsDetails = mockNewsDetailsBySlug;
 
 export const mockHomePayload: HomePayload = {
   hero: {
-    badge: "OFFICIAL ESPORTS ORGANIZATION",
-    title: "MENGUKUHKAN DOMINASI DI ARENA KOMPETITIF PROFESIONAL",
-    subtitle:
-      "Pusat informasi resmi manajemen korporasi, skuad divisi kompetitif PUBG Mobile, jadwal turnamen, dan pencapaian PT Adre Gemilang Jaya.",
-    backgroundImageUrl: null,
-    primaryCta: { label: "Eksplorasi Divisi", href: "/teams" },
-    secondaryCta: { label: "Profil Perusahaan", href: "/about" },
+    badgeText: "PT ADRE GEMILANG JAYA",
+    headline: "TIM PUBG MOBILE PT ADRE GEMILANG JAYA",
+    subheadline:
+      "Beroperasi di Jakarta dengan 4 pemain inti, 1 manajer tim, dan 2 staf pelatih.",
+    primaryCta: {
+      label: "Lihat Roster",
+      href: "/teams/pubg-mobile",
+    },
+    secondaryCta: {
+      label: "Jadwal Pertandingan",
+      href: "/matches",
+    },
+    highlightStats: [
+      { label: "PMNC Indonesia 2026", value: "#1" },
+      { label: "Total Poin Final", value: "148" },
+      { label: "Anggota Tim", value: "7" },
+    ],
   },
-  nextMatch: {
-    id: "mtc-101",
-    tournamentName: "PMSL SEA Fall 2026",
-    matchLabel: "ADRE Esports — Grand Finals Day 1",
-    scheduledAt: "2026-11-15T12:00:00Z",
-    division: { name: "PUBG Mobile", slug: "pubg-mobile" },
-    streamUrl: "https://youtube.com",
-  },
-  divisionQuickCard: {
-    name: "PUBG Mobile",
-    slug: "pubg-mobile",
-    logoUrl: null,
-    activeRosterCount: 5,
-  },
-  partnersStrip: mockPartners.map((p) => ({
-    id: p.id,
-    name: p.name,
-    logoUrl: p.logoUrl,
-    websiteUrl: p.websiteUrl,
-  })),
-  activeDivisions: mockDivisions,
-  upcomingMatches: mockMatchesPayload.items.slice(0, 3),
-  latestNews: mockNewsList.slice(0, 3),
-  companyIntro: {
-    headline: "Manajemen Esports Modern Berstandar Korporasi",
-    summary:
-      "PT Adre Gemilang Jaya menggabungkan pembinaan atlet kompetitif dengan tata kelola organisasi yang profesional dan siap berekspansi lintas divisi game.",
-    imageUrl: null,
-  },
+  nextMatch: mockMatchesPayload.items[0],
+  activeDivisions: mockDivisionsCatalog,
+  recentResults: [mockMatchesPayload.items[2], mockMatchesPayload.items[3]],
+  latestNews: mockNewsItems,
+  partnersStrip: [
+    {
+      id: "prt-01",
+      name: "Adre Gemilang Jaya Corp",
+      tier: "PRINCIPAL",
+      logoUrl: null,
+      websiteUrl: "https://adregemilang.co.id",
+    },
+    {
+      id: "prt-02",
+      name: "Apex Gear Indonesia",
+      tier: "OFFICIAL",
+      logoUrl: null,
+      websiteUrl: "https://example.com/apex-gear",
+    },
+    {
+      id: "prt-03",
+      name: "Vortex Pro Apparel",
+      tier: "OFFICIAL",
+      logoUrl: null,
+      websiteUrl: "https://example.com/vortex-apparel",
+    },
+  ],
 };

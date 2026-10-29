@@ -5,37 +5,30 @@ export type MatchStatusFilter = "ALL" | "UPCOMING" | "COMPLETED";
 export function filterMatches(
   items: MatchItem[],
   statusFilter: MatchStatusFilter,
-  gameSlugFilter: string,
+  divisionSlug: string = "ALL",
 ): MatchItem[] {
   return items.filter((match) => {
     const matchesStatus =
-      statusFilter === "ALL" ? true : match.status === statusFilter;
-    const matchesGame =
-      gameSlugFilter === "ALL" ? true : match.division.slug === gameSlugFilter;
+      statusFilter === "ALL" || match.status === statusFilter;
+    const matchesDivision =
+      divisionSlug === "ALL" || match.division.slug === divisionSlug;
 
-    return matchesStatus && matchesGame;
+    return matchesStatus && matchesDivision;
   });
 }
 
 export function formatMatchScoreDisplay(
   match: MatchItem,
-  pointsUnit = "PTS",
+  pointsUnit: string = "PTS",
 ): string {
-  if (match.status === "UPCOMING" || !match.result) {
+  if (match.status !== "COMPLETED") {
     return "UPCOMING";
   }
 
-  if (match.matchFormat === "BATTLE_ROYALE") {
-    const badge = match.result.placementBadge || "FINISHED";
-    const pts =
-      match.result.totalPoints !== null
-        ? ` (${match.result.totalPoints} ${pointsUnit})`
-        : "";
-    return `${badge}${pts}`;
+  if (match.formatType === "BATTLE_ROYALE" && match.resultBattleRoyale) {
+    const { placementLabel, totalPoints } = match.resultBattleRoyale;
+    return `${placementLabel} (${totalPoints} ${pointsUnit})`;
   }
 
-  // Format VERSUS (5v5 / Head-to-Head untuk kesiapan ekspansi divisi masa depan)
-  const our = match.result.ourScore ?? 0;
-  const opp = match.result.opponentScore ?? 0;
-  return `${our} : ${opp}`;
+  return "COMPLETED";
 }
