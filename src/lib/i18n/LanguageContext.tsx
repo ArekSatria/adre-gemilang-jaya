@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
 
 export type Locale = "id" | "en";
 
@@ -18,7 +24,7 @@ export const NAVIGATION_ITEMS: NavItemConfig[] = [
   {
     key: "teams",
     href: "/teams",
-    label: { id: "Divisi & Roster", en: "Teams" },
+    label: { id: "Divisi & Roster", en: "Divisions & Roster" },
   },
   {
     key: "matches",
@@ -31,331 +37,366 @@ export const NAVIGATION_ITEMS: NavItemConfig[] = [
     href: "/partners",
     label: { id: "Mitra", en: "Partners" },
   },
-  { key: "about", href: "/about", label: { id: "Tentang Kami", en: "About" } },
+  {
+    key: "about",
+    href: "/about",
+    label: { id: "Tentang Kami", en: "About Us" },
+  },
 ];
 
 export const DICTIONARY = {
   id: {
     nav: {
-      cta: "Kemitraan Bisnis",
-      mobileTitle: "Navigasi Utama",
+      cta: "Kontak Bisnis",
+      mobileTitle: "Menu",
       langLabel: "Bahasa",
     },
-    hero: {
-      badge: "ORGANISASI ESPORTS PROFESIONAL",
-      titleLine1: "SKUAD KOMPETITIF",
-      titleHighlight: "PUBG MOBILE",
-      titleLine2: "PT ADRE GEMILANG JAYA",
-      description:
-        "Berbasis di Palembang dan Jakarta, kami mengelola 1 divisi utama PUBG Mobile dengan 4 pemain inti, 2 staf pelatih analis, dan rekam jejak Juara 1 PMNC Indonesia 2026.",
-      primaryCta: "Lihat Roster PUBG Mobile",
-      secondaryCta: "Jadwal PMSL SEA 2026",
-      stats: [
-        { value: "Juara #1", label: "PMNC Indonesia 2026" },
-        { value: "148 Poin", label: "Rekor Skor Babak Final" },
-        { value: "6 Anggota", label: "4 Pemain Inti & 2 Staf" },
-        { value: "2024", label: "Tahun Pendirian Resmi" },
-      ],
-      nextMatchHeader: "JADWAL TURNAMEN TERDEKAT",
-      liveStreamBtn: "Tonton Siaran",
-      activeDivisionHeader: "DIVISI AKTIF SAAT INI",
-      rosterStatus: "4 Pemain Inti / 2 Staf Pelatih",
-      viewRosterBtn: "Buka Profil Tim",
-    },
-    homeSections: {
-      partnersLabel: "MITRA KOMERSIAL & SPONSOR RESMI",
-      matchesTitle: "JADWAL & HASIL PERTANDINGAN",
-      matchesSub: "Rekapitulasi skor Battle Royale dan agenda turnamen resmi.",
+    homeBigetron: {
+      heroBadge: "",
+      heroTitle: "",
+      heroSubtitle: "",
+      rosterCta: "Lihat Roster",
+      partnerCta: "Kontak Bisnis",
+      partnersSectionTitle: "MITRA RESMI",
+      partnersSectionSub: "Sponsor resmi yang mendukung operasional tim kami.",
+      upcomingTitle: "JADWAL PERTANDINGAN",
+      upcomingSub: "Jadwal turnamen resmi yang akan diikuti tim.",
       viewAllMatches: "Semua Pertandingan",
-      newsTitle: "BERITA & PENGUMUMAN RESMI",
-      newsSub: "Kabar terbaru seputar roster, hasil turnamen, dan korporasi.",
+      divisionTitle: "DIVISI KAMI",
+      divisionSub: "Tim yang bernaung di bawah PT Adre Gemilang Jaya.",
+      divisionBadge: "TIM UTAMA",
+      divisionMeta: "4 Pemain Inti, 1 Manajer, 2 Staf Pelatih",
+      exploreDivisionBtn: "Lihat Roster",
+      newsTitle: "BERITA & KEGIATAN",
+      newsSub: "Kabar terbaru, hasil turnamen, dan kegiatan tim.",
       viewAllNews: "Semua Berita",
-      readTime: "menit baca",
+      resultsTitle: "HASIL PERTANDINGAN",
+      resultsSub: "Rekap hasil akhir dan perolehan poin turnamen.",
+      watchStream: "Tonton Siaran",
+      pointsUnit: "POIN",
     },
     teamsPage: {
-      catalogTitle: "DIVISI KOMPETITIF",
-      catalogSub:
-        "Daftar divisi olahraga elektronik resmi di bawah manajemen PT Adre Gemilang Jaya.",
-      activePersonnelLabel: "Personel Aktif",
-      openRosterCta: "Lihat Profil & Roster →",
-      expansionTitle: "Arsitektur Multi-Divisi Siap Ekspansi",
+      catalogTitle: "DIVISI & ROSTER",
+      catalogSub: "Daftar divisi aktif PT Adre Gemilang Jaya.",
+      activePersonnelLabel: "Anggota Tim",
+      personnelComposition: "4 Pemain Inti, 1 Manajer, 2 Staf Pelatih",
+      openRosterCta: "Lihat Daftar Roster",
+      expansionTitle: "Pengembangan Divisi",
       expansionDesc:
-        "Sistem manajemen divisi PT Adre Gemilang Jaya dirancang dinamis. Penambahan divisi baru pada masa mendatang akan otomatis tampil pada katalog ini melalui sinkronisasi CMS.",
-      backToCatalog: "← Kembali ke Katalog Divisi",
-      playersHeading: "SKUAD PEMAIN INTI",
-      playersSub: "Empat atlet utama yang berlaga di rotasi turnamen resmi.",
-      staffHeading: "STAF KEPELATIHAN & ANALIS",
-      staffSub:
-        "Tim perumus strategi, bedah peta permainan, dan evaluasi performa.",
-      achievementsHeading: "REKAM JEJAK PRESTASI",
-      achievementsSub:
-        "Pencapaian resmi divisi pada turnamen tingkat nasional dan regional.",
-      scheduleCta: "Lihat Jadwal Pertandingan →",
+        "Manajemen terus memantau potensi pembukaan divisi game lainnya.",
+      backToCatalog: "Kembali ke Divisi",
+      playersHeading: "PEMAIN INTI",
+      playersSub: "Daftar pemain utama di turnamen resmi.",
+      managementHeading: "MANAJER & STAF PELATIH",
+      managementSub: "Manajer tim, pelatih kepala, dan analis.",
+      staffHeading: "MANAJER & STAF PELATIH",
+      staffSub: "Manajer tim, pelatih kepala, dan analis.",
+      achievementsHeading: "PRESTASI TIM",
+      achievementsSub: "Catatan pencapaian tim di turnamen resmi.",
+      scheduleCta: "Jadwal Pertandingan",
+      roleLabels: {
+        IGL: "Kapten & In-Game Leader",
+        RUSHER: "Rusher",
+        SUPPORT: "Support",
+        SCOUT: "Scout",
+        MANAGER: "Manajer Tim",
+        COACH: "Pelatih Kepala",
+        ANALYST: "Analis",
+      },
     },
     matchesPage: {
-      title: "JADWAL & HASIL PERTANDINGAN",
-      subtitle:
-        "Agenda turnamen resmi serta rekapitulasi poin akhir skuad kompetitif PT Adre Gemilang Jaya.",
-      filterStatusAll: "Semua Status",
+      title: "PERTANDINGAN",
+      subtitle: "Jadwal turnamen mendatang dan hasil pertandingan tim.",
+      filterStatusAll: "Semua",
       filterStatusUpcoming: "Akan Datang",
       filterStatusCompleted: "Selesai",
       filterGameAll: "Semua Divisi",
       watchStream: "Tonton Siaran",
-      upcomingBadge: "UPCOMING",
-      emptyState:
-        "Tidak ada data pertandingan yang sesuai dengan filter pilihan Anda.",
-      pointsUnit: "PTS",
+      upcomingBadge: "AKAN DATANG",
+      completedBadge: "SELESAI",
+      emptyState: "Belum ada jadwal pertandingan untuk kategori ini.",
+      pointsUnit: "POIN",
     },
     newsPage: {
-      title: "BERITA & RILIS RESMI",
+      title: "BERITA & KEGIATAN",
       subtitle:
-        "Pusat informasi resmi seputar perkembangan roster PUBG Mobile, laporan hasil turnamen, dan agenda korporasi PT Adre Gemilang Jaya.",
-      filterAllCategories: "Semua Kategori",
-      readMore: "Baca artikel →",
+        "Informasi terbaru seputar tim PUBG Mobile dan kegiatan PT Adre Gemilang Jaya.",
+      filterAllCategories: "Semua",
+      readMore: "Baca Artikel",
       readTimeUnit: "menit baca",
-      emptyState: "Belum ada artikel berita pada kategori ini.",
-      backToNews: "← Kembali ke Semua Berita",
-      publishedBy: "Ditulis oleh",
-      relatedHeading: "BERITA TERKAIT LAINNYA",
+      emptyState: "Belum ada berita di kategori ini.",
+      backToNews: "Kembali ke Berita",
+      publishedBy: "Oleh",
+      relatedHeading: "BERITA LAINNYA",
     },
     partnersPage: {
-      title: "MITRA KOMERSIAL & SPONSOR",
+      title: "MITRA & SPONSOR",
       subtitle:
-        "Kolaborasi strategis antara PT Adre Gemilang Jaya dan mitra korporasi dalam membangun ekosistem olahraga elektronik profesional yang terukur.",
-      visitPartner: "Kunjungi Situs Mitra",
-      valueHeading: "PROPOSISI NILAI KEMITRAAN",
-      valueSub: "Keunggulan kolaborasi merek bersama skuad kompetitif kami.",
-      ctaBannerTitle: "Buka Peluang Kolaborasi Strategis 2026/2027",
+        "Daftar mitra resmi yang bekerja sama dengan PT Adre Gemilang Jaya.",
+      visitPartner: "Situs Mitra",
+      ctaBannerTitle: "Kerja Sama Sponsorship",
       ctaBannerDesc:
-        "Hubungi tim komersial kami untuk mendapatkan dokumen Media Kit, demografi audiens, dan proposal kemitraan yang disesuaikan dengan target merek Anda.",
-      ctaButton: "Ajukan Proposal Kemitraan →",
+        "Hubungi tim kami di Jakarta untuk diskusi kerja sama dan sponsorship.",
+      ctaButton: "Hubungi Kami",
     },
     aboutPage: {
-      title: "TENTANG PT ADRE GEMILANG JAYA",
+      title: "TENTANG KAMI",
       subtitle:
-        "Manajemen olahraga elektronik berbadan hukum resmi yang berfokus pada prestasi kompetitif, tata kelola atlet profesional, dan integritas komersial.",
-      visionTitle: "VISI ORGANISASI",
+        "PT Adre Gemilang Jaya adalah perusahaan manajemen tim esports yang berkantor di Jakarta.",
+      visionBadge: "VISI",
+      visionTitle: "Visi Perusahaan",
       visionText:
-        "Menjadi organisasi olahraga elektronik profesional terkemuka di Asia Tenggara yang mencetak atlet berprestasi tingkat dunia melalui manajemen berbasis sains olahraga dan tata kelola korporasi modern.",
-      missionTitle: "MISI STRATEGIS",
+        "Menjadi organisasi esports profesional yang kompetitif di tingkat nasional dan Asia Tenggara melalui pembinaan tim yang terarah.",
+      missionBadge: "MISI",
+      missionTitle: "Misi Perusahaan",
       missions: [
-        "Membina skuad kompetitif PUBG Mobile secara terstruktur dengan dukungan staf pelatih dan analis data.",
-        "Membangun kemitraan komersial jangka panjang yang memberikan eksposur terukur bagi sponsor.",
-        "Menyediakan infrastruktur pelatihan berstandar tinggi di Palembang dan Jakarta.",
+        {
+          code: "1",
+          heading: "Pembinaan Tim Kompetitif",
+          desc: "Menyiapkan program latihan rutin bagi pemain bersama manajer, pelatih, dan analis.",
+        },
+        {
+          code: "2",
+          heading: "Kerja Sama Mitra",
+          desc: "Menjalankan program kolaborasi yang saling menguntungkan bersama para sponsor resmi.",
+        },
+        {
+          code: "3",
+          heading: "Manajemen Operasional di Jakarta",
+          desc: "Menyediakan fasilitas latihan dan dukungan penuh bagi kebutuhan skuad di Jakarta.",
+        },
       ],
-      milestonesHeading: "TONGGAK SEJARAH ORGANISASI",
+      milestonesHeading: "PERJALANAN KAMI",
       milestonesSub:
-        "Perjalanan pertumbuhan PT Adre Gemilang Jaya sejak pendirian resmi.",
+        "Catatan perkembangan PT Adre Gemilang Jaya sejak berdiri.",
       officesHeading: "LOKASI OPERASIONAL",
-      officesSub: "Pusat manajemen korporasi dan fasilitas pelatihan tim.",
+      officesSub: "Alamat kantor manajemen dan tempat latihan tim.",
     },
     contactPage: {
-      title: "KONTAK & KEMITRAAN BISNIS",
+      title: "KONTAK",
       subtitle:
-        "Saluran komunikasi resmi manajemen PT Adre Gemilang Jaya untuk pengajuan sponsor, undangan turnamen, wawancara media, dan kolaborasi korporasi.",
-      directInfoHeading: "INFORMASI KONTAK LANGSUNG",
-      emailLabel: "Surel Resmi Kemitraan",
-      hqLabel: "Kantor Operasional",
-      responseSla: "Estimasi waktu respons manajemen: 1–2 hari kerja.",
-      formHeading: "FORMULIR PENGAJUAN KEMITRAAN & KONTAK",
-      fullNameLabel: "Nama Lengkap Pengirim",
-      fullNamePlaceholder: "Contoh: Budi Santoso",
-      companyLabel: "Nama Perusahaan / Instansi",
-      companyPlaceholder: "Contoh: PT Nusantara Digital",
-      emailInputLabel: "Alamat Email Bisnis",
-      emailPlaceholder: "nama@perusahaan.co.id",
+        "Hubungi manajemen PT Adre Gemilang Jaya untuk keperluan sponsorship, undangan turnamen, atau pertanyaan umum.",
+      directInfoHeading: "KONTAK LANGSUNG",
+      emailLabel: "Email Resmi",
+      hqLabel: "Alamat Kantor",
+      hqValue:
+        "Kawasan Niaga Terpadu Sudirman (SCBD), Jakarta Selatan, DKI Jakarta",
+      responseSla:
+        "Tim kami akan membalas pesan Anda dalam 1 sampai 2 hari kerja.",
+      formHeading: "KIRIM PESAN",
+      fullNameLabel: "Nama Lengkap",
+      fullNamePlaceholder: "Nama Anda",
+      companyLabel: "Perusahaan / Instansi",
+      companyPlaceholder: "Nama perusahaan atau organisasi",
+      emailInputLabel: "Email",
+      emailPlaceholder: "nama@perusahaan.com",
       inquiryTypeLabel: "Kategori Keperluan",
       inquiryOptions: {
-        SPONSORSHIP: "Proposal Sponsorship & Brand Activation",
-        MEDIA: "Liputan Media & Hubungan Masyarakat (PR)",
-        TOURNAMENT: "Undangan Turnamen & Scrimmage Resmi",
-        GENERAL: "Pertanyaan Umum Korporasi",
+        SPONSORSHIP: "Proposal Sponsorship",
+        TOURNAMENT: "Undangan Turnamen",
+        GENERAL: "Pertanyaan Umum",
       },
-      messageLabel: "Rincian Pesan / Proposal Singkat",
-      messagePlaceholder:
-        "Tuliskan tujuan kolaborasi atau informasi yang Anda butuhkan (minimal 20 karakter)...",
-      submitButton: "Kirim Pesan Resmi",
-      submittingButton: "Mengirim Pesan...",
-      successTitle: "Pesan Anda Berhasil Diterima",
+      validationErrors: {
+        fullName: "Nama lengkap wajib diisi minimal 3 karakter.",
+        companyName: "Nama perusahaan atau instansi wajib diisi.",
+        email: "Format alamat email tidak valid.",
+        message: "Pesan wajib diisi minimal 20 karakter.",
+      },
+      messageLabel: "Pesan",
+      messagePlaceholder: "Tulis rincian keperluan Anda di sini...",
+      submitButton: "Kirim Pesan",
+      submittingButton: "Mengirim...",
+      successTitle: "Pesan Terkirim",
       successDesc:
-        "Terima kasih telah menghubungi PT Adre Gemilang Jaya. Tim manajemen komersial kami akan meninjau pesan Anda dan membalas melalui email.",
-      sendAnotherBtn: "Kirim Pesan Lainnya",
+        "Terima kasih telah menghubungi PT Adre Gemilang Jaya. Kami akan segera membalas pesan Anda melalui email.",
+      sendAnotherBtn: "Kirim Pesan Baru",
     },
     footer: {
-      description:
-        "Badan hukum manajemen olahraga elektronik (esports) yang beroperasi sejak 2024 di Palembang & Jakarta. Fokus pada pembinaan skuad PUBG Mobile dan kemitraan komersial terukur.",
-      navHeading: "Navigasi Portal",
-      divisionHeading: "Divisi Kompetitif",
-      divisionPrefix: "Skuad",
-      sponsorLink: "Ajukan proposal sponsor & kolaborasi →",
-      contactHeading: "Kontak Manajemen",
-      rights: "Seluruh hak cipta dilindungi undang-undang.",
-      aboutLink: "Profil Perusahaan",
-      contactLink: "Kontak Bisnis",
+      navHeading: "Menu",
+      divisionHeading: "Divisi",
+      divisionPrefix: "Tim",
+      sponsorLink: "Pengajuan Sponsorship",
+      contactHeading: "Kontak",
+      addressText: "SCBD, Jakarta Selatan, DKI Jakarta, Indonesia",
+      rights: "Seluruh hak cipta dilindungi.",
+      aboutLink: "Tentang Kami",
+      contactLink: "Kontak",
     },
   },
   en: {
     nav: {
-      cta: "Partner With Us",
-      mobileTitle: "Main Navigation",
+      cta: "Contact Us",
+      mobileTitle: "Menu",
       langLabel: "Language",
     },
-    hero: {
-      badge: "PROFESSIONAL ESPORTS ORGANIZATION",
-      titleLine1: "COMPETITIVE",
-      titleHighlight: "PUBG MOBILE",
-      titleLine2: "ROSTER BY PT ADRE GEMILANG JAYA",
-      description:
-        "Operating from Palembang and Jakarta, we manage our flagship PUBG Mobile division featuring 4 core players, 2 coaching staff, and the 1st Place title at PMNC Indonesia 2026.",
-      primaryCta: "Explore PUBGM Roster",
-      secondaryCta: "PMSL SEA 2026 Schedule",
-      stats: [
-        { value: "1st Place", label: "PMNC Indonesia 2026" },
-        { value: "148 Pts", label: "Grand Finals Point Record" },
-        { value: "6 Active", label: "4 Core Players & 2 Staff" },
-        { value: "2024", label: "Official Incorporation" },
-      ],
-      nextMatchHeader: "UPCOMING TOURNAMENT MATCH",
-      liveStreamBtn: "Watch Stream",
-      activeDivisionHeader: "ACTIVE COMPETITIVE DIVISION",
-      rosterStatus: "4 Core Players / 2 Coaching Staff",
-      viewRosterBtn: "View Team Profile",
-    },
-    homeSections: {
-      partnersLabel: "OFFICIAL COMMERCIAL PARTNERS & SPONSORS",
-      matchesTitle: "MATCH SCHEDULE & RESULTS",
-      matchesSub:
-        "Official Battle Royale standings and upcoming tournament fixtures.",
+    homeBigetron: {
+      heroBadge: "",
+      heroTitle: "",
+      heroSubtitle: "",
+      rosterCta: "View Roster",
+      partnerCta: "Contact Us",
+      partnersSectionTitle: "OFFICIAL PARTNERS",
+      partnersSectionSub: "Official sponsors supporting our team operations.",
+      upcomingTitle: "UPCOMING MATCHES",
+      upcomingSub: "Scheduled official tournaments for our team.",
       viewAllMatches: "All Matches",
-      newsTitle: "OFFICIAL NEWS & RELEASES",
-      newsSub:
-        "Latest updates on roster moves, tournament results, and corporate news.",
+      divisionTitle: "OUR DIVISION",
+      divisionSub: "Competitive team under PT Adre Gemilang Jaya.",
+      divisionBadge: "MAIN SQUAD",
+      divisionMeta: "4 Core Players, 1 Manager, 2 Coaching Staff",
+      exploreDivisionBtn: "View Roster",
+      newsTitle: "NEWS & EVENTS",
+      newsSub: "Latest updates, tournament results, and team activities.",
       viewAllNews: "All News",
-      readTime: "min read",
+      resultsTitle: "MATCH RESULTS",
+      resultsSub: "Final standings and points from recent tournaments.",
+      watchStream: "Watch Stream",
+      pointsUnit: "PTS",
     },
     teamsPage: {
-      catalogTitle: "COMPETITIVE DIVISIONS",
-      catalogSub:
-        "Official esports divisions managed under PT Adre Gemilang Jaya.",
-      activePersonnelLabel: "Active Personnel",
-      openRosterCta: "View Profile & Roster →",
-      expansionTitle: "Scalable Multi-Division Architecture",
+      catalogTitle: "DIVISIONS & ROSTER",
+      catalogSub: "Active competitive division of PT Adre Gemilang Jaya.",
+      activePersonnelLabel: "Team Members",
+      personnelComposition: "4 Core Players, 1 Manager, 2 Coaching Staff",
+      openRosterCta: "View Roster",
+      expansionTitle: "Division Development",
       expansionDesc:
-        "PT Adre Gemilang Jaya's division management system is built dynamically. Future game divisions added via the CMS will automatically appear in this catalog.",
-      backToCatalog: "← Back to Divisions Catalog",
-      playersHeading: "CORE PLAYER ROSTER",
-      playersSub:
-        "Four starting athletes competing in official tournament rotations.",
-      staffHeading: "COACHING & ANALYST STAFF",
-      staffSub:
-        "Tactical masterminds behind map rotations and performance review.",
-      achievementsHeading: "TOURNAMENT ACHIEVEMENTS",
-      achievementsSub:
-        "Official competitive milestones across national and regional leagues.",
-      scheduleCta: "View Match Schedule →",
+        "Our management evaluates new competitive game titles for future expansion.",
+      backToCatalog: "Back to Divisions",
+      playersHeading: "ACTIVE PLAYERS",
+      playersSub: "Main roster competing in official tournaments.",
+      managementHeading: "MANAGER & COACHING STAFF",
+      managementSub: "Team manager, head coach, and analyst.",
+      staffHeading: "MANAGER & COACHING STAFF",
+      staffSub: "Team manager, head coach, and analyst.",
+      achievementsHeading: "ACHIEVEMENTS",
+      achievementsSub: "Official tournament results achieved by the team.",
+      scheduleCta: "Match Schedule",
+      roleLabels: {
+        IGL: "Captain & In-Game Leader",
+        RUSHER: "Rusher",
+        SUPPORT: "Support",
+        SCOUT: "Scout",
+        MANAGER: "Team Manager",
+        COACH: "Head Coach",
+        ANALYST: "Analyst",
+      },
     },
     matchesPage: {
-      title: "MATCH SCHEDULE & RESULTS",
-      subtitle:
-        "Official tournament fixtures and final standings for PT Adre Gemilang Jaya competitive divisions.",
-      filterStatusAll: "All Matches",
+      title: "MATCHES",
+      subtitle: "Upcoming tournament schedule and past match results.",
+      filterStatusAll: "All",
       filterStatusUpcoming: "Upcoming",
       filterStatusCompleted: "Completed",
       filterGameAll: "All Divisions",
       watchStream: "Watch Stream",
       upcomingBadge: "UPCOMING",
-      emptyState: "No matches found matching your selected filter criteria.",
+      completedBadge: "COMPLETED",
+      emptyState: "No matches available for this filter.",
       pointsUnit: "PTS",
     },
     newsPage: {
-      title: "OFFICIAL NEWS & RELEASES",
+      title: "NEWS & EVENTS",
       subtitle:
-        "Official press releases covering PUBG Mobile roster updates, tournament recaps, and corporate initiatives by PT Adre Gemilang Jaya.",
-      filterAllCategories: "All Categories",
-      readMore: "Read article →",
+        "Latest updates on our PUBG Mobile squad and PT Adre Gemilang Jaya activities.",
+      filterAllCategories: "All",
+      readMore: "Read Article",
       readTimeUnit: "min read",
-      emptyState: "No news articles available in this category yet.",
-      backToNews: "← Back to All News",
-      publishedBy: "Written by",
-      relatedHeading: "OTHER RELATED NEWS",
+      emptyState: "No news articles in this category.",
+      backToNews: "Back to News",
+      publishedBy: "By",
+      relatedHeading: "OTHER NEWS",
     },
     partnersPage: {
-      title: "COMMERCIAL PARTNERS & SPONSORS",
-      subtitle:
-        "Strategic collaborations between PT Adre Gemilang Jaya and corporate partners in building a measurable professional esports ecosystem.",
-      visitPartner: "Visit Partner Website",
-      valueHeading: "PARTNERSHIP VALUE PROPOSITION",
-      valueSub:
-        "Key brand advantages of collaborating with our competitive squad.",
-      ctaBannerTitle:
-        "Unlock Strategic Collaboration Opportunities for 2026/2027",
+      title: "PARTNERS & SPONSORS",
+      subtitle: "Official partners collaborating with PT Adre Gemilang Jaya.",
+      visitPartner: "Partner Website",
+      ctaBannerTitle: "Sponsorship Inquiries",
       ctaBannerDesc:
-        "Contact our commercial team to request our official Media Kit, audience demographics, and tailored sponsorship proposals.",
-      ctaButton: "Submit Partnership Inquiry →",
+        "Get in touch with our team in Jakarta for sponsorship and partnership discussions.",
+      ctaButton: "Contact Us",
     },
     aboutPage: {
-      title: "ABOUT PT ADRE GEMILANG JAYA",
+      title: "ABOUT US",
       subtitle:
-        "A legally incorporated esports management organization focused on competitive excellence, athlete governance, and commercial integrity.",
-      visionTitle: "CORPORATE VISION",
+        "PT Adre Gemilang Jaya is an esports team management company based in Jakarta.",
+      visionBadge: "VISION",
+      visionTitle: "Company Vision",
       visionText:
-        "To become a leading professional esports organization in Southeast Asia, developing world-class athletes through sports science management and modern corporate governance.",
-      missionTitle: "STRATEGIC MISSIONS",
+        "To become a competitive professional esports organization at the national and Southeast Asian levels through structured team development.",
+      missionBadge: "MISSION",
+      missionTitle: "Company Mission",
       missions: [
-        "Develop our flagship PUBG Mobile squad systematically with dedicated coaching and data analyst staff.",
-        "Build long-term commercial partnerships delivering measurable brand exposure for sponsors.",
-        "Provide high-standard training facilities in Palembang and Jakarta.",
+        {
+          code: "1",
+          heading: "Competitive Team Training",
+          desc: "Provide regular training programs for players supported by a manager, coach, and analyst.",
+        },
+        {
+          code: "2",
+          heading: "Partner Collaboration",
+          desc: "Deliver mutually beneficial brand programs with our official sponsors.",
+        },
+        {
+          code: "3",
+          heading: "Jakarta Operations",
+          desc: "Maintain training facilities and operational support for our squad in Jakarta.",
+        },
       ],
-      milestonesHeading: "CORPORATE MILESTONES",
+      milestonesHeading: "OUR JOURNEY",
       milestonesSub:
-        "Key growth stages of PT Adre Gemilang Jaya since official incorporation.",
-      officesHeading: "OPERATIONAL LOCATIONS",
-      officesSub:
-        "Corporate management headquarters and team training facilities.",
+        "Key milestones of PT Adre Gemilang Jaya since its establishment.",
+      officesHeading: "OPERATIONAL LOCATION",
+      officesSub: "Management office and team training location.",
     },
     contactPage: {
-      title: "BUSINESS & PARTNERSHIP CONTACT",
+      title: "CONTACT",
       subtitle:
-        "Official communication channel of PT Adre Gemilang Jaya for sponsorship proposals, tournament invitations, media inquiries, and corporate collaborations.",
-      directInfoHeading: "DIRECT CONTACT INFORMATION",
-      emailLabel: "Official Partnership Email",
-      hqLabel: "Operational Offices",
-      responseSla: "Estimated management response time: 1–2 business days.",
-      formHeading: "PARTNERSHIP & BUSINESS INQUIRY FORM",
-      fullNameLabel: "Sender Full Name",
-      fullNamePlaceholder: "e.g., Budi Santoso",
-      companyLabel: "Company / Organization Name",
-      companyPlaceholder: "e.g., Nusantara Digital Corp",
-      emailInputLabel: "Business Email Address",
+        "Reach out to PT Adre Gemilang Jaya management for sponsorship proposals, tournament invitations, or general inquiries.",
+      directInfoHeading: "DIRECT CONTACT",
+      emailLabel: "Official Email",
+      hqLabel: "Office Address",
+      hqValue:
+        "Sudirman Central Business District (SCBD), South Jakarta, DKI Jakarta",
+      responseSla: "Our team typically replies within 1 to 2 business days.",
+      formHeading: "SEND A MESSAGE",
+      fullNameLabel: "Full Name",
+      fullNamePlaceholder: "Your name",
+      companyLabel: "Company / Organization",
+      companyPlaceholder: "Company or organization name",
+      emailInputLabel: "Email",
       emailPlaceholder: "name@company.com",
-      inquiryTypeLabel: "Inquiry Category",
+      inquiryTypeLabel: "Category",
       inquiryOptions: {
-        SPONSORSHIP: "Sponsorship Proposal & Brand Activation",
-        MEDIA: "Media Coverage & Public Relations",
-        TOURNAMENT: "Tournament Invitation & Official Scrims",
-        GENERAL: "General Corporate Inquiry",
+        SPONSORSHIP: "Sponsorship Proposal",
+        TOURNAMENT: "Tournament Invitation",
+        GENERAL: "General Inquiry",
       },
-      messageLabel: "Message / Proposal Summary",
-      messagePlaceholder:
-        "Describe your collaboration goals or inquiry details (minimum 20 characters)...",
-      submitButton: "Send Official Inquiry",
-      submittingButton: "Sending Inquiry...",
-      successTitle: "Your Inquiry Has Been Received",
+      validationErrors: {
+        fullName: "Full name is required (minimum 3 characters).",
+        companyName: "Company or organization name is required.",
+        email: "Please enter a valid email address.",
+        message: "Message must be at least 20 characters.",
+      },
+      messageLabel: "Message",
+      messagePlaceholder: "Write the details of your inquiry here...",
+      submitButton: "Send Message",
+      submittingButton: "Sending...",
+      successTitle: "Message Sent",
       successDesc:
-        "Thank you for contacting PT Adre Gemilang Jaya. Our commercial management team will review your message and respond via email.",
+        "Thank you for contacting PT Adre Gemilang Jaya. We will reply to your email shortly.",
       sendAnotherBtn: "Send Another Message",
     },
     footer: {
-      description:
-        "Registered esports management company operating since 2024 in Palembang & Jakarta. Dedicated to professional PUBG Mobile athlete development and measurable brand partnerships.",
-      navHeading: "Portal Navigation",
-      divisionHeading: "Active Division",
-      divisionPrefix: "Squad",
-      sponsorLink: "Submit sponsorship & partnership inquiry →",
-      contactHeading: "Management Contact",
+      navHeading: "Menu",
+      divisionHeading: "Division",
+      divisionPrefix: "Team",
+      sponsorLink: "Sponsorship Inquiry",
+      contactHeading: "Contact",
+      addressText: "SCBD, South Jakarta, DKI Jakarta, Indonesia",
       rights: "All rights reserved.",
-      aboutLink: "Company Profile",
-      contactLink: "Business Inquiry",
+      aboutLink: "About Us",
+      contactLink: "Contact",
     },
   },
 };
@@ -376,9 +417,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("id");
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("adre_locale") as Locale | null;
-    if (saved === "id" || saved === "en") {
-      setLocaleState(saved);
+    const saved = window.localStorage.getItem("adre_locale");
+    if (saved === "en" || saved === "id") {
+      const timer = window.setTimeout(() => {
+        setLocaleState(saved);
+      }, 0);
+      return () => window.clearTimeout(timer);
     }
   }, []);
 
@@ -387,14 +431,17 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     window.localStorage.setItem("adre_locale", nextLocale);
   };
 
+  const contextValue = useMemo(
+    () => ({
+      locale,
+      setLocale,
+      t: DICTIONARY[locale] as DictionaryType,
+    }),
+    [locale],
+  );
+
   return (
-    <LanguageContext.Provider
-      value={{
-        locale,
-        setLocale,
-        t: DICTIONARY[locale] as DictionaryType,
-      }}
-    >
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );
