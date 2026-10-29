@@ -4,227 +4,191 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Globe } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
+import type { GlobalSettings } from "@/lib/schemas";
 import { NAVIGATION_ITEMS, useLanguage } from "@/lib/i18n/LanguageContext";
 import { BrandLogo } from "@/components/ui/BrandElements";
-import { SmartLink } from "@/components/ui/SmartLink";
+import { cn } from "@/lib/utils/cn";
 
 interface FloatingGlassNavbarProps {
-  siteName: string;
+  settings?: GlobalSettings;
+  siteName?: string;
   logoUrl?: string | null;
 }
 
 export function FloatingGlassNavbar({
+  settings,
   siteName,
   logoUrl,
 }: FloatingGlassNavbarProps) {
   const pathname = usePathname();
   const { locale, setLocale, t } = useLanguage();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const resolvedSiteName =
+    siteName ?? settings?.siteName ?? "PT Adre Gemilang Jaya";
+  const resolvedLogoUrl =
+    logoUrl !== undefined ? logoUrl : (settings?.logoUrl ?? null);
 
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsMobileMenuOpen(false);
-    };
-
-    if (isMobileMenuOpen) {
+    if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
     } else {
       document.body.style.overflow = "";
     }
-
     return () => {
       document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isMobileMenuOpen]);
+  }, [mobileMenuOpen]);
 
-  const isRouteActive = (href: string) => {
-    if (href === "/") return pathname === "/";
-    return pathname === href || pathname.startsWith(`${href}/`);
+  const toggleLanguage = () => {
+    setLocale(locale === "id" ? "en" : "id");
   };
 
   return (
     <>
-      <header className="sticky top-0 z-50 h-20 w-full border-b border-white/5 bg-[#0f131c]/95 backdrop-blur-md">
-        <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 border-b border-white/5 bg-background/90 backdrop-blur-md">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Hanya menampilkan gambar logo tanpa teks nama perusahaan di sampingnya */}
           <Link
             href="/"
-            className="flex items-center gap-3 focus:outline-none"
-            aria-label={siteName}
+            aria-label={resolvedSiteName}
+            className="flex shrink-0 items-center py-1"
           >
-            <BrandLogo logoUrl={logoUrl} height={46} />
-            <div className="flex flex-col">
-              <span className="font-display text-lg font-bold tracking-wider text-foreground uppercase leading-none">
-                ADRE ESPORTS
-              </span>
-              <span className="mt-1 text-xs font-medium text-slate-300">
-                PT Adre Gemilang Jaya
-              </span>
-            </div>
+            <BrandLogo logoUrl={resolvedLogoUrl} height={50} />
           </Link>
 
-          {/* Desktop Nav */}
+          {/* Menu Navigasi Desktop */}
           <nav
             aria-label="Main Navigation"
-            className="hidden items-center gap-6 lg:flex"
+            className="hidden lg:flex lg:items-center lg:gap-1"
           >
             {NAVIGATION_ITEMS.map((item) => {
-              const active = isRouteActive(item.href);
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
               return (
                 <Link
                   key={item.key}
                   href={item.href}
                   className={cn(
-                    "relative py-2 text-sm font-medium transition-colors",
-                    active
-                      ? "text-brand"
-                      : "text-slate-300 hover:text-foreground",
+                    "rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-brand/15 font-semibold text-brand"
+                      : "text-slate-300 hover:bg-white/5 hover:text-foreground",
                   )}
-                  {...(active ? { "aria-current": "page" as const } : {})}
                 >
                   {item.label[locale]}
-                  {active && (
-                    <span className="absolute inset-x-0 -bottom-[21px] h-[2px] bg-brand" />
-                  )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Desktop Controls */}
-          <div className="hidden items-center gap-4 lg:flex">
+          {/* Sakelar Bahasa ID/EN & CTA Kemitraan */}
+          <div className="hidden lg:flex lg:items-center lg:gap-3">
             <button
               type="button"
-              onClick={() => setLocale(locale === "id" ? "en" : "id")}
-              className="flex cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-300 transition-colors hover:text-foreground"
-              aria-label="Ganti bahasa"
+              onClick={toggleLanguage}
+              aria-label="Toggle Language"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/10 bg-surface px-3 py-2 text-xs font-semibold text-slate-200 transition-colors hover:border-brand/50 hover:text-brand"
             >
-              <Globe className="h-3.5 w-3.5 text-slate-300" />
-              <span className="uppercase">{locale}</span>
+              <Globe className="h-3.5 w-3.5 text-brand" />
+              <span>{locale.toUpperCase()}</span>
             </button>
 
-            <SmartLink
+            <Link
               href="/contact"
-              className={cn(
-                "rounded-lg px-4 py-2 text-xs font-semibold transition-colors",
-                pathname === "/contact"
-                  ? "bg-brand text-background"
-                  : "bg-brand/15 text-brand hover:bg-brand hover:text-background",
-              )}
+              className="rounded-lg bg-brand px-4 py-2.5 text-xs font-bold text-background uppercase transition-opacity hover:opacity-90"
             >
               {t.nav.cta}
-            </SmartLink>
+            </Link>
           </div>
 
-          {/* Mobile Controls */}
+          {/* Kontrol Layar Mobile */}
           <div className="flex items-center gap-2 lg:hidden">
             <button
               type="button"
-              onClick={() => setLocale(locale === "id" ? "en" : "id")}
-              className="flex h-10 cursor-pointer items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-slate-300 hover:text-foreground"
-              aria-label="Ganti bahasa"
+              onClick={toggleLanguage}
+              aria-label="Toggle Language"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/10 bg-surface px-3 py-2 text-xs font-semibold text-slate-200"
             >
-              <Globe className="h-4 w-4" />
-              <span className="uppercase">{locale}</span>
+              <Globe className="h-3.5 w-3.5 text-brand" />
+              <span>{locale.toUpperCase()}</span>
             </button>
 
             <button
               type="button"
-              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-surface text-foreground transition-colors hover:border-brand/50 hover:text-brand"
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-navigation-drawer"
-              aria-label="Toggle Menu"
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open Navigation Menu"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-surface text-foreground"
             >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
+              <Menu className="h-5 w-5" />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Fullscreen Drawer — Dirender di luar <header> agar tidak terjebak backdrop-filter & tampil persis seperti gambar referensi tanpa titik bulat */}
-      {isMobileMenuOpen && (
+      {/* Fullscreen Mobile Drawer */}
+      {mobileMenuOpen && (
         <div
-          id="mobile-navigation-drawer"
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-[9999] flex flex-col justify-between bg-[#0f131c] px-6 py-6 lg:hidden"
+          className="fixed inset-0 z-50 flex flex-col bg-background px-6 py-6 lg:hidden"
         >
-          {/* Baris Atas Drawer */}
-          <div>
-            <div className="flex items-center justify-between border-b border-white/10 pb-5">
-              <Link
-                href="/"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3"
-              >
-                <BrandLogo logoUrl={logoUrl} height={42} />
-                <div className="flex flex-col">
-                  <span className="font-display text-lg font-bold tracking-wider text-foreground uppercase leading-none">
-                    ADRE ESPORTS
-                  </span>
-                  <span className="mt-1 text-xs font-medium text-slate-300">
-                    PT Adre Gemilang Jaya
-                  </span>
-                </div>
-              </Link>
-
-              <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-surface text-foreground hover:border-brand/50"
-                aria-label="Tutup menu"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Daftar 6 Menu (Persis Gambar Referensi Tanpa Titik Bulat) */}
-            <nav
-              aria-label="Mobile Navigation"
-              className="mt-8 flex flex-col space-y-2"
+          <div className="flex items-center justify-between border-b border-white/10 pb-5">
+            <Link
+              href="/"
+              aria-label={resolvedSiteName}
+              onClick={() => setMobileMenuOpen(false)}
             >
-              {NAVIGATION_ITEMS.map((item) => {
-                const active = isRouteActive(item.href);
-                return (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      "flex items-center rounded-xl px-5 py-4 font-display text-xl font-bold tracking-wider uppercase transition-colors",
-                      active
-                        ? "border border-brand/60 bg-brand/15 text-brand"
-                        : "border border-transparent text-foreground hover:bg-surface",
-                    )}
-                    {...(active ? { "aria-current": "page" as const } : {})}
-                  >
-                    <span>{item.label[locale]}</span>
-                  </Link>
-                );
-              })}
-            </nav>
+              <BrandLogo logoUrl={resolvedLogoUrl} height={44} />
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close Navigation Menu"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-surface text-foreground"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
 
-          {/* Tombol Bawah Drawer */}
-          <div className="border-t border-white/10 pt-6">
-            <SmartLink
+          <div className="mt-6 flex-1 space-y-2 overflow-y-auto">
+            <p className="px-3 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+              {t.nav.mobileTitle}
+            </p>
+            {NAVIGATION_ITEMS.map((item) => {
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    "block rounded-xl px-4 py-3.5 font-display text-lg font-bold transition-colors",
+                    isActive
+                      ? "bg-brand text-background"
+                      : "text-foreground hover:bg-surface",
+                  )}
+                >
+                  {item.label[locale]}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="border-t border-white/10 pt-5">
+            <Link
               href="/contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex w-full items-center justify-center rounded-xl bg-brand px-5 py-4 font-display text-sm font-bold tracking-wider text-background uppercase transition-opacity hover:opacity-90"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex w-full items-center justify-center rounded-xl bg-brand py-3.5 text-sm font-bold text-background uppercase"
             >
               {t.nav.cta}
-            </SmartLink>
+            </Link>
           </div>
         </div>
       )}
