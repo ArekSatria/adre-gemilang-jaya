@@ -40,7 +40,11 @@ export function ContactView({
       for (const issue of parsed.error.issues) {
         const key = issue.path[0] as keyof ContactFormInput;
         if (key && !errors[key]) {
-          errors[key] = issue.message;
+          const localizedErr =
+            t.contactPage.validationErrors[
+              key as keyof typeof t.contactPage.validationErrors
+            ];
+          errors[key] = localizedErr || issue.message;
         }
       }
       setFieldErrors(errors);
@@ -68,7 +72,6 @@ export function ContactView({
 
   return (
     <div className="mx-auto max-w-7xl space-y-12 px-4 py-12 sm:px-6 lg:px-8">
-      {/* Header Halaman Kontak */}
       <div className="max-w-2xl">
         <h1 className="font-display text-3xl font-bold tracking-normal text-foreground sm:text-5xl">
           {t.contactPage.title}
@@ -79,7 +82,7 @@ export function ContactView({
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        {/* Kolom Kiri (5 Kolom): Informasi Kontak Langsung Manajemen */}
+        {/* Kolom Kiri (5 Kolom): Informasi Kontak Langsung di Jakarta */}
         <div className="space-y-6 rounded-2xl bg-surface p-6 sm:p-8 lg:col-span-5">
           <h2 className="font-display text-xl font-bold text-foreground">
             {t.contactPage.directInfoHeading}
@@ -108,8 +111,7 @@ export function ContactView({
                   {t.contactPage.hqLabel}
                 </p>
                 <p className="mt-1 text-sm text-foreground">
-                  Palembang (HQ &amp; Bootcamp) &amp; Jakarta (Commercial
-                  Office)
+                  {t.contactPage.hqValue}
                 </p>
               </div>
             </div>
@@ -120,7 +122,7 @@ export function ContactView({
           </div>
         </div>
 
-        {/* Kolom Kanan (7 Kolom): Formulir Kontak & Kemitraan Tervalidasi Zod (PBI-14) */}
+        {/* Kolom Kanan (7 Kolom): Formulir Kontak dengan 3 Kategori Keperluan (Revisi 10) */}
         <div className="rounded-2xl bg-surface p-6 sm:p-8 lg:col-span-7">
           {isSubmitted ? (
             <div className="flex flex-col items-start justify-center space-y-4 py-8">
@@ -148,7 +150,6 @@ export function ContactView({
               </h2>
 
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                {/* Input Nama Lengkap */}
                 <div>
                   <label
                     htmlFor="fullName"
@@ -177,7 +178,6 @@ export function ContactView({
                   )}
                 </div>
 
-                {/* Input Nama Perusahaan */}
                 <div>
                   <label
                     htmlFor="companyName"
@@ -208,7 +208,6 @@ export function ContactView({
               </div>
 
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                {/* Input Email Bisnis */}
                 <div>
                   <label
                     htmlFor="email"
@@ -237,7 +236,6 @@ export function ContactView({
                   )}
                 </div>
 
-                {/* Pilihan Kategori Keperluan */}
                 <div>
                   <label
                     htmlFor="inquiryType"
@@ -260,9 +258,6 @@ export function ContactView({
                     <option value="SPONSORSHIP">
                       {t.contactPage.inquiryOptions.SPONSORSHIP}
                     </option>
-                    <option value="MEDIA">
-                      {t.contactPage.inquiryOptions.MEDIA}
-                    </option>
                     <option value="TOURNAMENT">
                       {t.contactPage.inquiryOptions.TOURNAMENT}
                     </option>
@@ -273,7 +268,6 @@ export function ContactView({
                 </div>
               </div>
 
-              {/* Input Rincian Pesan / Proposal */}
               <div>
                 <label
                   htmlFor="message"

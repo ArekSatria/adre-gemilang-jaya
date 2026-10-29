@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Users, Trophy } from "lucide-react";
+import { Users } from "lucide-react";
 import type { DivisionSummary } from "@/lib/schemas";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
@@ -11,11 +11,10 @@ interface TeamsCatalogViewProps {
 }
 
 export function TeamsCatalogView({ divisions }: TeamsCatalogViewProps) {
-  const { t } = useLanguage();
+  const { locale, t } = useLanguage();
 
   return (
     <div className="mx-auto max-w-7xl space-y-12 px-4 py-12 sm:px-6 lg:px-8">
-      {/* Header Halaman Katalog Divisi */}
       <div className="max-w-2xl">
         <h1 className="font-display text-3xl font-bold tracking-normal text-foreground sm:text-5xl">
           {t.teamsPage.catalogTitle}
@@ -25,76 +24,40 @@ export function TeamsCatalogView({ divisions }: TeamsCatalogViewProps) {
         </p>
       </div>
 
-      {/* Grid DivisionPortalCard */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {divisions.map((div) => (
           <Link
             key={div.id}
             href={`/teams/${div.slug}`}
-            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-surface p-6 transition-transform hover:-translate-y-1 sm:p-8 lg:col-span-7"
+            className="group flex flex-col justify-between rounded-2xl border border-white/5 bg-surface p-6 sm:p-8 transition-transform hover:-translate-y-1"
           >
             <div className="space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="rounded bg-brand/15 px-2.5 py-1 text-xs font-semibold text-brand uppercase">
-                  ACTIVE DIVISION
+              <div className="flex items-center justify-between">
+                <span className="rounded bg-brand/15 px-3 py-1 text-xs font-bold text-brand uppercase">
+                  {div.shortCode}
                 </span>
-                {div.shortCode && (
-                  <span className="font-mono text-xs font-semibold text-slate-300">
-                    {div.shortCode}
-                  </span>
-                )}
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300">
+                  <Users className="h-4 w-4 text-brand" />
+                  <span>{t.teamsPage.personnelComposition}</span>
+                </span>
               </div>
 
-              <h2 className="font-display text-3xl font-bold text-foreground transition-colors group-hover:text-brand sm:text-4xl">
+              <h2 className="font-display text-2xl font-bold text-foreground group-hover:text-brand sm:text-3xl">
                 {div.name}
               </h2>
 
-              {div.description && (
-                <p className="text-sm leading-relaxed text-slate-300">
-                  {div.description}
-                </p>
-              )}
+              <p className="text-sm leading-relaxed text-slate-300">
+                {locale === "id"
+                  ? "Divisi kompetitif utama PT Adre Gemilang Jaya di Jakarta yang diperkuat oleh 4 pemain inti, 1 manajer tim, dan 2 staf pelatih analis."
+                  : "PT Adre Gemilang Jaya's flagship competitive division in Jakarta featuring 4 core players, 1 team manager, and 2 coaching analysts."}
+              </p>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/5 pt-5">
-              <div className="flex items-center gap-6 text-xs text-slate-300">
-                <span className="inline-flex items-center gap-2">
-                  <Users className="h-4 w-4 text-brand" />
-                  <span>4 Core Players / 2 Staff</span>
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <Trophy className="h-4 w-4 text-brand" />
-                  <span>#1 PMNC 2026</span>
-                </span>
-              </div>
-
-              <span className="text-xs font-semibold text-brand group-hover:underline">
-                {t.teamsPage.openRosterCta}
-              </span>
+            <div className="mt-8 border-t border-white/5 pt-4 text-xs font-bold text-brand uppercase">
+              {t.teamsPage.openRosterCta}
             </div>
           </Link>
         ))}
-
-        {/* Panel Informasi Kesiapan Multi-Divisi Dinamis (5 Kolom Samping) */}
-        <div className="flex flex-col justify-between rounded-2xl bg-surface/60 p-6 sm:p-8 lg:col-span-5">
-          <div className="space-y-3">
-            <h2 className="font-display text-xl font-bold text-foreground">
-              {t.teamsPage.expansionTitle}
-            </h2>
-            <p className="text-sm leading-relaxed text-slate-300">
-              {t.teamsPage.expansionDesc}
-            </p>
-          </div>
-
-          <div className="mt-6 border-t border-white/5 pt-4 text-xs text-slate-300">
-            <Link
-              href="/contact"
-              className="font-semibold text-brand hover:underline"
-            >
-              {t.footer.sponsorLink}
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );

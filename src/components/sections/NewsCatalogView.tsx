@@ -5,6 +5,10 @@ import Link from "next/link";
 import type { getNewsCatalog } from "@/lib/api/client";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { filterNewsByCategory } from "@/lib/utils/news-helpers";
+import {
+  translateArticleContent,
+  translateCategoryName,
+} from "@/lib/utils/corporate-helpers";
 import { cn } from "@/lib/utils/cn";
 
 type NewsCatalogData = Awaited<ReturnType<typeof getNewsCatalog>>;
@@ -17,9 +21,24 @@ export function NewsCatalogView({ data }: NewsCatalogViewProps) {
   const { locale, t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
+  // Revisi 3: Hapus kategori "korporasi" dari daftar filter tombol kategori
+  const validCategories = useMemo(() => {
+    return data.categories
+      .filter((cat) => cat.slug.toLowerCase() !== "korporasi")
+      .map((cat) => ({
+        ...cat,
+        name: translateCategoryName(cat.slug, cat.name, locale),
+      }));
+  }, [data.categories, locale]);
+
+  // Revisi 8: Terjemahkan seluruh artikel berita sesuai bahasa aktif (ID/EN)
+  const localizedItems = useMemo(() => {
+    return data.items.map((item) => translateArticleContent(item, locale));
+  }, [data.items, locale]);
+
   const filteredArticles = useMemo(() => {
-    return filterNewsByCategory(data.items, selectedCategory);
-  }, [data.items, selectedCategory]);
+    return filterNewsByCategory(localizedItems, selectedCategory);
+  }, [localizedItems, selectedCategory]);
 
   const formatPublishDate = (iso: string) => {
     return new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
@@ -31,7 +50,6 @@ export function NewsCatalogView({ data }: NewsCatalogViewProps) {
 
   return (
     <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 sm:px-6 lg:px-8">
-      {/* Header Halaman Berita */}
       <div className="max-w-2xl">
         <h1 className="font-display text-3xl font-bold tracking-normal text-foreground sm:text-5xl">
           {t.newsPage.title}
@@ -41,7 +59,7 @@ export function NewsCatalogView({ data }: NewsCatalogViewProps) {
         </p>
       </div>
 
-      {/* Bar Filter Kategori Berita (Client-Side Filtering - PBI-10) */}
+      {/* Bar Filter Kategori Berita Tanpa "Korporasi" (Revisi 3) */}
       <div
         role="group"
         aria-label="Filter Kategori Berita"
@@ -60,7 +78,7 @@ export function NewsCatalogView({ data }: NewsCatalogViewProps) {
           {t.newsPage.filterAllCategories}
         </button>
 
-        {data.categories.map((cat) => {
+        {validCategories.map((cat) => {
           const active = selectedCategory === cat.slug;
           return (
             <button
@@ -80,7 +98,6 @@ export function NewsCatalogView({ data }: NewsCatalogViewProps) {
         })}
       </div>
 
-      {/* Grid Kartu Editorial Berita */}
       {filteredArticles.length === 0 ? (
         <div className="py-12 text-center text-sm text-slate-300">
           {t.newsPage.emptyState}

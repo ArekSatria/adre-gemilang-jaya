@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import type { getNewsBySlug } from "@/lib/api/client";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { translateArticleContent } from "@/lib/utils/corporate-helpers";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 type NewsDetailData = NonNullable<Awaited<ReturnType<typeof getNewsBySlug>>>;
@@ -14,6 +15,11 @@ interface NewsArticleDetailViewProps {
 
 export function NewsArticleDetailView({ article }: NewsArticleDetailViewProps) {
   const { locale, t } = useLanguage();
+
+  const localizedArticle = translateArticleContent(article, locale);
+  const localizedRelated = article.relatedNews.map((item) =>
+    translateArticleContent(item, locale),
+  );
 
   const formatPublishDate = (iso: string) => {
     return new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
@@ -36,38 +42,40 @@ export function NewsArticleDetailView({ article }: NewsArticleDetailViewProps) {
         <header className="space-y-4 border-b border-white/10 pb-8">
           <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
             <span className="rounded bg-brand/15 px-2.5 py-1 font-semibold text-brand uppercase">
-              {article.category.name}
+              {localizedArticle.category.name}
             </span>
-            <span>{formatPublishDate(article.publishedAt)}</span>
+            <span>{formatPublishDate(localizedArticle.publishedAt)}</span>
             <span>
-              {article.readingTimeMinutes} {t.newsPage.readTimeUnit}
+              {localizedArticle.readingTimeMinutes} {t.newsPage.readTimeUnit}
             </span>
           </div>
 
           <h1 className="font-display text-3xl font-bold leading-tight text-foreground sm:text-4xl lg:text-5xl">
-            {article.title}
+            {localizedArticle.title}
           </h1>
 
           <p className="text-xs font-medium text-slate-300">
             {t.newsPage.publishedBy}{" "}
             <span className="font-semibold text-foreground">
-              {article.author.name}
+              {localizedArticle.author.name}
             </span>
           </p>
         </header>
 
         <div
           className="space-y-5 text-base leading-relaxed text-slate-200 [&_h3]:mt-8 [&_h3]:font-display [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-foreground [&_p]:leading-relaxed [&_strong]:font-semibold [&_strong]:text-brand"
-          dangerouslySetInnerHTML={{ __html: article.contentHtml }}
+          dangerouslySetInnerHTML={{
+            __html: localizedArticle.contentHtml || article.contentHtml,
+          }}
         />
       </article>
 
-      {article.relatedNews.length > 0 && (
+      {localizedRelated.length > 0 && (
         <section className="space-y-6 border-t border-white/10 pt-12">
           <SectionHeading title={t.newsPage.relatedHeading} />
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {article.relatedNews.map((item) => (
+            {localizedRelated.map((item) => (
               <Link
                 key={item.id}
                 href={`/news/${item.slug}`}

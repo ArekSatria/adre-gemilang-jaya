@@ -2,183 +2,163 @@
 
 import React from "react";
 import Link from "next/link";
-import { Trophy, User } from "lucide-react";
-import type { DivisionDetail, RosterMember } from "@/lib/schemas";
+import type { DivisionDetail } from "@/lib/schemas";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { SocialIconSvg } from "@/components/ui/BrandElements";
 
 interface DivisionDetailViewProps {
   division: DivisionDetail;
 }
 
-function RosterCutoutCard({ member }: { member: RosterMember }) {
-  const socials = member.socials;
-
-  return (
-    <div className="group flex flex-col justify-between overflow-hidden rounded-2xl bg-surface transition-transform hover:-translate-y-1">
-      {/* Area Visual Siluet / Foto Atlet */}
-      <div className="relative flex h-52 items-end justify-center bg-gradient-to-t from-surface via-elevated/60 to-elevated px-4 pt-6">
-        <div className="flex h-28 w-28 items-center justify-center rounded-full bg-background/60 text-slate-300 transition-colors group-hover:text-brand">
-          <User className="h-14 w-14 stroke-[1.5]" aria-hidden="true" />
-        </div>
-        <span className="absolute top-4 right-4 rounded bg-brand/15 px-2.5 py-1 text-xs font-semibold text-brand uppercase">
-          {member.role}
-        </span>
-      </div>
-
-      {/* Identitas IGN, Nama Lengkap & Tautan Sosial */}
-      <div className="flex flex-1 flex-col justify-between p-5">
-        <div>
-          <h3 className="font-display text-xl font-bold text-foreground">
-            {member.ign}
-          </h3>
-          <p className="mt-0.5 text-sm text-slate-300">{member.fullName}</p>
-        </div>
-
-        {socials && (
-          <div className="mt-4 flex items-center gap-3 border-t border-white/5 pt-3">
-            {socials.instagram && (
-              <a
-                href={socials.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Instagram ${member.ign}`}
-                className="text-slate-300 transition-colors hover:text-brand"
-              >
-                <SocialIconSvg platform="instagram" className="h-4 w-4" />
-              </a>
-            )}
-            {socials.youtube && (
-              <a
-                href={socials.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`YouTube ${member.ign}`}
-                className="text-slate-300 transition-colors hover:text-brand"
-              >
-                <SocialIconSvg platform="youtube" className="h-4 w-4" />
-              </a>
-            )}
-            {socials.tiktok && (
-              <a
-                href={socials.tiktok}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`TikTok ${member.ign}`}
-                className="text-slate-300 transition-colors hover:text-brand"
-              >
-                <SocialIconSvg platform="tiktok" className="h-4 w-4" />
-              </a>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 export function DivisionDetailView({ division }: DivisionDetailViewProps) {
-  const { t } = useLanguage();
+  const { locale, t } = useLanguage();
 
-  const players = division.roster
-    .filter((m) => m.roleType === "PLAYER")
-    .sort((a, b) => a.displayOrder - b.displayOrder);
+  const players = division.roster.filter((m) => m.roleType === "PLAYER");
+  const rawStaff = division.roster.filter((m) => m.roleType === "STAFF");
 
-  const staffMembers = division.roster
-    .filter((m) => m.roleType === "STAFF")
-    .sort((a, b) => a.displayOrder - b.displayOrder);
+  const hasManager = rawStaff.some((s) =>
+    s.role.toUpperCase().includes("MANAGER"),
+  );
+  const staffWithManager = hasManager
+    ? rawStaff
+    : [
+        {
+          id: "rst-manager",
+          ign: "ADRE Valkyrie",
+          fullName: "Dimas Prakoso",
+          role: "MANAGER",
+          roleType: "STAFF" as const,
+          countryCode: "ID",
+          photoUrl: null,
+          joinDate: "2024-04-01",
+        },
+        ...rawStaff,
+      ];
+
+  const getRoleTranslation = (roleKey: string) => {
+    const normalized = roleKey.toUpperCase();
+    const dictRoles = t.teamsPage.roleLabels as Record<string, string>;
+    return dictRoles[normalized] || roleKey;
+  };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-16 px-4 py-10 sm:px-6 lg:px-8">
-      {/* Navigasi Kembali & Banner Header Divisi */}
-      <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-14 px-4 py-12 sm:px-6 lg:px-8">
+      <div className="space-y-4">
         <Link
           href="/teams"
-          className="inline-block text-xs font-semibold text-slate-300 transition-colors hover:text-brand"
+          className="inline-block text-xs font-semibold text-slate-300 hover:text-brand"
         >
           {t.teamsPage.backToCatalog}
         </Link>
 
-        <div className="rounded-2xl bg-surface p-6 sm:p-10">
-          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-            <div className="max-w-2xl space-y-3">
-              <span className="inline-block rounded bg-brand/15 px-2.5 py-1 text-xs font-semibold text-brand uppercase">
-                ACTIVE ROSTER
-              </span>
-              <h1 className="font-display text-3xl font-bold text-foreground sm:text-5xl">
-                {division.name}
-              </h1>
-              {division.description && (
-                <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
-                  {division.description}
-                </p>
-              )}
-            </div>
-
-            <Link
-              href="/matches"
-              className="inline-flex shrink-0 items-center justify-center rounded-lg bg-brand px-5 py-3 text-xs font-bold text-background uppercase transition-opacity hover:opacity-90"
-            >
-              {t.teamsPage.scheduleCta}
-            </Link>
+        <div className="flex flex-col justify-between gap-4 border-b border-white/10 pb-8 lg:flex-row lg:items-end">
+          <div className="max-w-3xl space-y-2">
+            <span className="text-xs font-bold text-brand uppercase">
+              {division.shortCode} ({t.teamsPage.personnelComposition})
+            </span>
+            <h1 className="font-display text-3xl font-bold text-foreground sm:text-5xl">
+              {division.name}
+            </h1>
+            <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
+              {locale === "id"
+                ? "Tim PUBG Mobile PT Adre Gemilang Jaya di Jakarta yang terdiri dari 4 pemain inti, 1 manajer tim, serta 2 staf pelatih dan analis."
+                : "PT Adre Gemilang Jaya's PUBG Mobile squad in Jakarta consisting of 4 core players, 1 team manager, and 2 coaching staff."}
+            </p>
           </div>
+
+          <Link
+            href="/matches"
+            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-brand px-5 py-3 text-xs font-bold text-background uppercase"
+          >
+            {t.teamsPage.scheduleCta}
+          </Link>
         </div>
       </div>
 
-      {/* Seksi 1: Skuad Pemain Inti (PLAYER: IGL, RUSHER, SUPPORT, SCOUT) */}
+      {/* Pemain Inti */}
       <section className="space-y-6">
         <SectionHeading
           title={t.teamsPage.playersHeading}
           subtitle={t.teamsPage.playersSub}
         />
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {players.map((player) => (
-            <RosterCutoutCard key={player.id} member={player} />
+            <div
+              key={player.id}
+              className="rounded-xl border border-white/10 bg-surface p-6 space-y-3"
+            >
+              <span className="inline-block font-mono text-xs font-bold text-brand uppercase">
+                {player.role}
+              </span>
+
+              <div>
+                <h3 className="font-display text-xl font-bold text-foreground">
+                  {player.ign.replace(/[•—–-]/g, " ")}
+                </h3>
+                <p className="mt-1 text-sm text-slate-300">{player.fullName}</p>
+              </div>
+
+              <div className="border-t border-white/10 pt-3 text-xs text-slate-400">
+                {getRoleTranslation(player.role)}
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Seksi 2: Jajaran Staf Kepelatihan & Analis (STAFF: Coach & Analyst) */}
-      {staffMembers.length > 0 && (
-        <section className="space-y-6">
-          <SectionHeading
-            title={t.teamsPage.staffHeading}
-            subtitle={t.teamsPage.staffSub}
-          />
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {staffMembers.map((staff) => (
-              <RosterCutoutCard key={staff.id} member={staff} />
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Manajer & Staf Pelatih */}
+      <section className="space-y-6">
+        <SectionHeading
+          title={t.teamsPage.managementHeading}
+          subtitle={t.teamsPage.managementSub}
+        />
 
-      {/* Seksi 3: Rekam Jejak Prestasi Turnamen (Divide-Y List Tanpa Kartu) */}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          {staffWithManager.map((member) => (
+            <div
+              key={member.id}
+              className="rounded-xl border border-white/10 bg-surface p-6 space-y-3"
+            >
+              <span className="inline-block font-mono text-xs font-bold text-brand uppercase">
+                {member.role}
+              </span>
+
+              <div>
+                <h3 className="font-display text-xl font-bold text-foreground">
+                  {member.ign.replace(/[•—–-]/g, " ")}
+                </h3>
+                <p className="mt-1 text-sm text-slate-300">{member.fullName}</p>
+              </div>
+
+              <div className="border-t border-white/10 pt-3 text-xs text-slate-300">
+                {getRoleTranslation(member.role)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Prestasi */}
       <section className="space-y-6">
         <SectionHeading
           title={t.teamsPage.achievementsHeading}
           subtitle={t.teamsPage.achievementsSub}
         />
-        <div className="divide-y divide-white/5 border-y border-white/5">
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {division.achievements.map((ach) => (
             <div
               key={ach.id}
-              className="flex flex-col justify-between gap-2 py-4 sm:flex-row sm:items-center"
+              className="rounded-xl border border-white/10 bg-surface p-6 space-y-2"
             >
-              <div className="flex items-center gap-4">
-                <span className="font-mono text-sm font-bold text-brand">
-                  {ach.year}
-                </span>
-                <h3 className="font-display text-base font-bold text-foreground">
-                  {ach.tournamentName}
-                </h3>
+              <div className="flex items-center justify-between font-mono text-xs font-bold text-brand uppercase">
+                <span>{ach.placement.replace(/[•—–-]/g, " ")}</span>
+                <span>{ach.year}</span>
               </div>
-
-              <div className="inline-flex items-center gap-2 self-start rounded bg-brand/15 px-3 py-1 text-xs font-semibold text-brand sm:self-auto">
-                <Trophy className="h-3.5 w-3.5" />
-                <span>{ach.placementLabel}</span>
-              </div>
+              <h3 className="font-display text-lg font-bold text-foreground">
+                {ach.title}
+              </h3>
             </div>
           ))}
         </div>
