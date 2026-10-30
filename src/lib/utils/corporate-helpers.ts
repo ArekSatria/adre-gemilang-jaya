@@ -30,6 +30,7 @@ export function validateContactSubmission(input: unknown) {
 export interface CorporatePartnerItem {
   id: string;
   name: string;
+  logoUrl?: string | null;
   tierLabel: string;
   category: { id: string; en: string };
   description: { id: string; en: string };
@@ -39,45 +40,78 @@ export interface CorporatePartnerItem {
 export const CORPORATE_PARTNERS_DATA: CorporatePartnerItem[] = [
   {
     id: "prt-01",
-    name: "Adre Gemilang Jaya Corp",
-    tierLabel: "MITRA UTAMA",
+    name: "Renee Tournament",
+    logoUrl: "/images/partners/partner-1.png",
+    tierLabel: "",
     category: {
-      id: "Mitra Utama Manajemen Tim",
-      en: "Principal Team Partner",
+      id: "",
+      en: "",
     },
     description: {
-      id: "Mendukung operasional harian, fasilitas tempat latihan di Jakarta, dan pengembangan tim PUBG Mobile PT Adre Gemilang Jaya.",
-      en: "Supporting daily operations, training facilities in Jakarta, and team development for PT Adre Gemilang Jaya.",
+      id: "Renee Tournament (diselenggarakan oleh Ren Events) adalah penyelenggara turnamen esports komunitas, khususnya untuk PUBG Mobile, yang aktif mengadakan berbagai kompetisi seperti PUBG Mobile Raven Bellatrix (PMRB) 2026, Adre Dominion Battle League, serta turnamen komunitas lainnya.",
+      en: "Renee Tournament (organized by Ren Events) is a community esports tournament organizer, especially for PUBG Mobile, which actively holds various competitions such as PUBG Mobile Raven Bellatrix (PMRB) 2026, Adre Dominion Battle League, as well as other community tournaments.",
     },
-    websiteUrl: "https://adregemilang.co.id",
+    websiteUrl: "https://www.instagram.com/renevents.official",
   },
   {
     id: "prt-02",
-    name: "Apex Gear Indonesia",
-    tierLabel: "MITRA PERANGKAT",
+    name: "Level Up Indonesia",
+    logoUrl: "/images/partners/partner-2.png",
+    tierLabel: "",
     category: {
-      id: "Mitra Perangkat Gaming",
-      en: "Gaming Hardware Partner",
+      id: "",
+      en: "",
     },
     description: {
-      id: "Menyediakan perangkat audio dan perlengkapan latihan bagi pemain inti serta staf pelatih selama musim turnamen.",
-      en: "Providing audio gear and training peripherals for our players and coaching staff throughout the tournament season.",
+      id: "Level Up Indonesia merujuk pada beberapa platform berbeda, mulai dari media komunitas esports hingga wadah pengembangan diri. Salah satu yang paling populer di media sosial adalah platform informasi kompetisi esports dan gaming (seperti turnamen PUBG Mobile).",
+      en: "Level Up Indonesia encompasses several different platforms, ranging from esports community media to self-development platforms. One of the most popular platforms on social media is the platform for information on esports and gaming competitions (such as PUBG Mobile tournaments).",
     },
-    websiteUrl: "https://example.com/apex-gear",
+    websiteUrl: "https://www.instagram.com/levelupid_",
   },
   {
     id: "prt-03",
-    name: "Vortex Pro Apparel",
-    tierLabel: "MITRA APPAREL",
+    name: "Coach Online ID",
+    logoUrl: "/images/partners/partner-3.png",
+    tierLabel: "",
     category: {
-      id: "Mitra Jersey Resmi Tim",
-      en: "Official Team Jersey Partner",
+      id: "",
+      en: "",
     },
     description: {
-      id: "Memproduksi seragam tanding resmi dan perlengkapan pakaian tim ADRE Esports di setiap turnamen.",
-      en: "Producing official match jerseys and team apparel for ADRE Esports across all tournaments.",
+      id: "Coach Online ID adalah akun media sosial (Instagram dan TikTok) yang berfungsi sebagai media komunitas dan penyedia analisis seputar dunia esports, khususnya PUBG Mobile di Indonesia. Akun ini populer di kalangan penggemar karena sering menyajikan berita turnamen terbaru, statistik pemain, serta pembahasan taktik dan gameplay. Dalam operasionalnya, Coach Online ID juga sering bekerja sama dengan penyelenggara acara seperti Ren Events untuk mendukung berbagai kegiatan komunitas kompetitif.",
+      en: "Coach Online ID is a social media account (Instagram and TikTok) that serves as a community resource and provides analysis on the world of esports, particularly PUBG Mobile in Indonesia. The account is popular among fans for its frequent presentations of the latest tournament news, player statistics, and discussions on tactics and gameplay. Coach Online ID also frequently collaborates with event organizers such as Ren Events to support various competitive community activities.",
     },
-    websiteUrl: "https://example.com/vortex-apparel",
+    websiteUrl: "https://www.instagram.com/coach.online.id",
+  },
+  {
+    id: "prt-04",
+    name: "Community Leader Indopride",
+    logoUrl: "/images/partners/partner-4.png",
+    tierLabel: "",
+    category: {
+      id: "",
+      en: "",
+    },
+    description: {
+      id: "Community Leader Indopride (CLI) adalah wadah komunitas dan penyelenggara turnamen pihak ketiga yang berfokus pada pengembangan ekosistem kompetitif game PUBG Mobile di Indonesia. Melalui platform media sosialnya, komunitas ini aktif menyelenggarakan kompetisi non-resmi (scrim dan turnamen), memfasilitasi perekrutan anggota klan esports lokal, serta menjadi ruang diskusi bagi para pemain grassroots maupun semi-pro untuk mengasah kemampuan mereka.",
+      en: "Community Leader Indopride (CLI) is a community platform and third-party tournament organizer focused on developing the competitive gaming ecosystem for PUBG Mobile in Indonesia. Through its social media platforms, the community actively hosts unofficial competitions (scrim and tournaments), facilitates the recruitment of local esports clan members, and serves as a discussion space for grassroots and semi-professional players to hone their skills.",
+    },
+    websiteUrl: "https://www.instagram.com/cli.official_",
+  },
+  {
+    id: "prt-05",
+    name: "Chopper Tournament",
+    logoUrl: "/images/partners/partner-5.png",
+    tierLabel: "",
+    category: {
+      id: "",
+      en: "",
+    },
+    description: {
+      id: "Chopper Tournament adalah platform penyelenggara turnamen pihak ketiga (tournament organizer) yang aktif mengadakan kompetisi PUBG Mobile untuk tingkat komunitas di Indonesia. Turnamen ini sangat populer karena konsisten menyelenggarakan liga kompetitif, seperti Chopper Crew, Chopper Showdown, serta liga khusus perempuan seperti Chopper Ladies League. Wadah ini menjadi sarana bagi para pemain semi-pro dan tim komunitas untuk mengasah taktik, bersaing memperebutkan hadiah uang tunai, dan membangun portofolio di skena esports kompetitif.",
+      en: "Chopper Tournament is a third-party tournament platform that actively hosts PUBG Mobile competitions for the community level in Indonesia. This tournament is very popular due to its consistent organization of competitive leagues, such as Chopper Crew, Chopper Showdown, and women-only leagues like Chopper Ladies League. This platform serves as a means for semi-professional players and community teams to hone their tactics, compete for cash prizes, and build their portfolios in the competitive esports scene.",
+    },
+    websiteUrl: "https://www.instagram.com/choppertournament",
   },
 ];
 

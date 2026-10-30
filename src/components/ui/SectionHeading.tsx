@@ -1,35 +1,26 @@
 import React from "react";
-import Link from "next/link";
-import { SmartLink } from "./SmartLink";
+import { cn } from "@/lib/utils/cn";
 
 interface SectionHeadingProps {
   title: string;
   subtitle?: string;
-  actionLabel?: string;
-  actionHref?: string;
+  className?: string;
 }
 
 export function SectionHeading({
   title,
   subtitle,
-  actionLabel,
-  actionHref,
+  className,
 }: SectionHeadingProps) {
   return (
-    <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-      <div>
-        <h2 className="font-display text-2xl font-bold tracking-normal text-foreground sm:text-3xl">
-          {title}
-        </h2>
-        {subtitle && <p className="mt-1 text-sm text-slate-300">{subtitle}</p>}
-      </div>
-      {actionLabel && actionHref && (
-        <SmartLink
-          href={actionHref}
-          className="text-xs font-semibold text-brand hover:underline"
-        >
-          {actionLabel} →
-        </SmartLink>
+    <div className={cn("max-w-2xl", className)}>
+      <h2 className="font-display text-2xl font-bold tracking-tight text-foreground uppercase sm:text-3xl">
+        {title}
+      </h2>
+      {subtitle && subtitle.trim().length > 0 && (
+        <p className="mt-2 text-sm leading-relaxed text-slate-300">
+          {subtitle}
+        </p>
       )}
     </div>
   );

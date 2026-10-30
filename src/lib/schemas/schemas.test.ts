@@ -113,7 +113,7 @@ describe("Sprint 1 s/d Sprint 6 - Full Frontend Unit Test Suite", () => {
   });
 
   it("memvalidasi data mitra komersial, tonggak sejarah, dan 1 lokasi operasional di Jakarta (PBI-12 & PBI-13)", () => {
-    expect(CORPORATE_PARTNERS_DATA).toHaveLength(3);
+    expect(CORPORATE_PARTNERS_DATA).toHaveLength(5);
     expect(CORPORATE_MILESTONES.map((m) => m.year)).toEqual([
       "2024",
       "2025",

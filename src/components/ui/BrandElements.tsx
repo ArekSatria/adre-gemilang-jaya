@@ -57,3 +57,44 @@ export function BrandLogo({
     </span>
   );
 }
+
+interface PartnerLogoGraphicProps {
+  partnerId: string;
+  name: string;
+  logoUrl?: string | null;
+  className?: string;
+}
+
+export function PartnerLogoGraphic({
+  partnerId,
+  name,
+  logoUrl,
+  className,
+}: PartnerLogoGraphicProps) {
+  const [imgError, setImgError] = useState(false);
+
+  if (logoUrl && !imgError) {
+    return (
+      <Image
+        src={logoUrl}
+        alt={name}
+        fill
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 250px"
+        className={cn("object-cover object-center", className)}
+        onError={() => setImgError(true)}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex h-full w-full items-center justify-center bg-surface p-4 text-center font-display text-lg font-bold text-foreground uppercase",
+        className,
+      )}
+      aria-label={name || partnerId}
+    >
+      {name}
+    </div>
+  );
+}

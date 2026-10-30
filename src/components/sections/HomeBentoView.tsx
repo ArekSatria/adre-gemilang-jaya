@@ -12,6 +12,7 @@ import {
   translateMatchStage,
 } from "@/lib/utils/corporate-helpers";
 import { formatMatchScoreDisplay } from "@/lib/utils/match-helpers";
+import { PartnerLogoGraphic } from "@/components/ui/BrandElements";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SmartLink } from "@/components/ui/SmartLink";
 
@@ -39,7 +40,7 @@ export function HomeBentoView({ data }: HomeBentoViewProps) {
 
   return (
     <div className="space-y-16 pb-20">
-      {/* 1. FOTO TIM UTAMA (BERSIH TANPA TEKS ATAU TOMBOL YANG MENINDIH) */}
+      {/* 1. FOTO TIM UTAMA */}
       <section className="w-full border-b border-white/10 bg-background">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-white/10 bg-surface sm:aspect-[21/9]">
@@ -57,48 +58,38 @@ export function HomeBentoView({ data }: HomeBentoViewProps) {
       </section>
 
       <div className="mx-auto max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">
-        {/* 2. PARTNERS */}
-        <section className="space-y-6">
-          <SectionHeading
-            title={t.homeBigetron.partnersSectionTitle}
-            subtitle={t.homeBigetron.partnersSectionSub}
-          />
+        {/* 2. MITRA RESMI (5 CARD PERSEGI, HANYA LOGO MEMENUHI CARD TANPA TEKS) */}
+        <section className="space-y-5">
+          <SectionHeading title={t.home.partnersSectionTitle} />
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {CORPORATE_PARTNERS_DATA.map((partner) => (
               <Link
                 key={partner.id}
                 href="/partners"
-                className="group flex flex-col justify-between rounded-xl border border-white/10 bg-surface p-6 transition-colors hover:border-brand"
+                aria-label={partner.name}
+                className="group relative aspect-square w-full overflow-hidden rounded-2xl border border-white/10 bg-surface transition-all duration-300 hover:border-brand"
               >
-                <div>
-                  <span className="text-xs font-semibold text-brand uppercase">
-                    {partner.tierLabel}
-                  </span>
-                  <h3 className="mt-1 font-display text-xl font-bold text-foreground group-hover:text-brand">
-                    {partner.name}
-                  </h3>
-                  <p className="mt-1 text-xs text-slate-300">
-                    {partner.category[locale]}
-                  </p>
-                </div>
+                <PartnerLogoGraphic
+                  partnerId={partner.id}
+                  name={partner.name}
+                  logoUrl={partner.logoUrl}
+                  className="transition-transform duration-500 group-hover:scale-105"
+                />
               </Link>
             ))}
           </div>
         </section>
 
-        {/* 3. UPCOMING MATCHES */}
-        <section className="space-y-6">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <SectionHeading
-              title={t.homeBigetron.upcomingTitle}
-              subtitle={t.homeBigetron.upcomingSub}
-            />
+        {/* 3. JADWAL PERTANDINGAN */}
+        <section className="space-y-5">
+          <div className="flex items-center justify-between gap-4">
+            <SectionHeading title={t.home.upcomingTitle} />
             <Link
               href="/matches"
               className="text-xs font-bold text-brand uppercase hover:underline"
             >
-              {t.homeBigetron.viewAllMatches}
+              {t.home.viewAllMatches}
             </Link>
           </div>
 
@@ -135,7 +126,7 @@ export function HomeBentoView({ data }: HomeBentoViewProps) {
                       href={match.streamUrl}
                       className="text-xs font-bold text-foreground hover:text-brand"
                     >
-                      {t.homeBigetron.watchStream}
+                      {t.home.watchStream}
                     </SmartLink>
                   )}
                 </div>
@@ -144,56 +135,48 @@ export function HomeBentoView({ data }: HomeBentoViewProps) {
           </div>
         </section>
 
-        {/* 4. DIVISION */}
-        <section className="space-y-6">
-          <SectionHeading
-            title={t.homeBigetron.divisionTitle}
-            subtitle={t.homeBigetron.divisionSub}
-          />
+        {/* 4. DIVISI KAMI (HANYA TEKS BESAR PUBG MOBILE + LOGO PUBG DI LATAR BELAKANG + TOMBOL LIHAT ROSTER) */}
+        <section className="space-y-5">
+          <SectionHeading title={t.home.divisionTitle} />
 
-          <div className="rounded-2xl border border-white/10 bg-surface p-6 sm:p-8">
-            <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
-              <div className="max-w-2xl space-y-3">
-                <span className="text-xs font-bold text-brand uppercase">
-                  {t.homeBigetron.divisionBadge}
-                </span>
-                <h3 className="font-display text-3xl font-bold text-foreground">
-                  PUBG MOBILE
-                </h3>
-                <p className="text-xs font-semibold text-slate-300">
-                  {t.homeBigetron.divisionMeta}
-                </p>
-                <p className="text-sm leading-relaxed text-slate-300">
-                  {locale === "id"
-                    ? "Tim PUBG Mobile PT Adre Gemilang Jaya di Jakarta yang diperkuat oleh 4 pemain inti, 1 manajer tim, dan 2 staf pelatih."
-                    : "PT Adre Gemilang Jaya's PUBG Mobile team in Jakarta featuring 4 core players, 1 team manager, and 2 coaching staff."}
-                </p>
-              </div>
+          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-surface">
+            <div className="pointer-events-none absolute inset-0">
+              <Image
+                src="/images/pubg-logo-bg.svg"
+                alt=""
+                fill
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="object-cover object-center opacity-75 transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/50 to-background/85" />
+            </div>
+
+            <div className="relative z-10 flex min-h-[240px] flex-col items-center justify-between gap-6 px-6 py-12 text-center sm:min-h-[280px] sm:px-12 lg:flex-row lg:text-left">
+              <h3 className="w-full font-display text-5xl font-black tracking-tight text-foreground uppercase sm:text-7xl lg:text-8xl">
+                PUBG MOBILE
+              </h3>
 
               <div className="shrink-0">
                 <Link
                   href="/teams/pubg-mobile"
-                  className="inline-flex items-center justify-center rounded-lg bg-brand px-6 py-3 text-xs font-bold text-background uppercase transition-opacity hover:opacity-90"
+                  className="inline-flex items-center justify-center rounded-xl bg-brand px-8 py-4 text-xs font-bold text-background uppercase transition-opacity hover:opacity-90"
                 >
-                  {t.homeBigetron.exploreDivisionBtn}
+                  {t.home.exploreDivisionBtn}
                 </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 5. NEWS & EVENTS */}
-        <section className="space-y-6">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <SectionHeading
-              title={t.homeBigetron.newsTitle}
-              subtitle={t.homeBigetron.newsSub}
-            />
+        {/* 5. BERITA & KEGIATAN */}
+        <section className="space-y-5">
+          <div className="flex items-center justify-between gap-4">
+            <SectionHeading title={t.home.newsTitle} />
             <Link
               href="/news"
               className="text-xs font-bold text-brand uppercase hover:underline"
             >
-              {t.homeBigetron.viewAllNews}
+              {t.home.viewAllNews}
             </Link>
           </div>
 
@@ -227,18 +210,15 @@ export function HomeBentoView({ data }: HomeBentoViewProps) {
           </div>
         </section>
 
-        {/* 6. MATCH RESULTS */}
-        <section className="space-y-6">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <SectionHeading
-              title={t.homeBigetron.resultsTitle}
-              subtitle={t.homeBigetron.resultsSub}
-            />
+        {/* 6. HASIL PERTANDINGAN */}
+        <section className="space-y-5">
+          <div className="flex items-center justify-between gap-4">
+            <SectionHeading title={t.home.resultsTitle} />
             <Link
               href="/matches"
               className="text-xs font-bold text-brand uppercase hover:underline"
             >
-              {t.homeBigetron.viewAllMatches}
+              {t.home.viewAllMatches}
             </Link>
           </div>
 
@@ -265,7 +245,7 @@ export function HomeBentoView({ data }: HomeBentoViewProps) {
 
                 <div className="mt-4 shrink-0 sm:mt-0">
                   <span className="inline-block rounded-lg bg-brand/15 px-4 py-2 font-mono text-sm font-bold text-brand">
-                    {formatMatchScoreDisplay(match, t.homeBigetron.pointsUnit)}
+                    {formatMatchScoreDisplay(match, t.home.pointsUnit)}
                   </span>
                 </div>
               </div>
