@@ -1,60 +1,68 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Users } from "lucide-react";
 import type { DivisionSummary } from "@/lib/schemas";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { mockDivisionsCatalog } from "@/lib/api/mock-data";
 
 interface TeamsCatalogViewProps {
-  divisions: DivisionSummary[];
+  divisions?: DivisionSummary[];
 }
 
 export function TeamsCatalogView({ divisions }: TeamsCatalogViewProps) {
-  const { locale, t } = useLanguage();
+  const { t } = useLanguage();
+  const activeDivisions =
+    divisions && divisions.length > 0 ? divisions : mockDivisionsCatalog;
 
   return (
-    <div className="mx-auto max-w-7xl space-y-12 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="max-w-2xl">
-        <h1 className="font-display text-3xl font-bold tracking-normal text-foreground sm:text-5xl">
+    <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 sm:px-6 lg:px-8">
+      {/* Header Halaman Tanpa Subjudul */}
+      <div>
+        <h1 className="font-display text-3xl font-bold tracking-tight text-foreground uppercase sm:text-5xl">
           {t.teamsPage.catalogTitle}
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
-          {t.teamsPage.catalogSub}
-        </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {divisions.map((div) => (
+      {/* Daftar Card Divisi */}
+      <div className="grid grid-cols-1 gap-8">
+        {activeDivisions.map((division) => (
           <Link
-            key={div.id}
-            href={`/teams/${div.slug}`}
-            className="group flex flex-col justify-between rounded-2xl border border-white/5 bg-surface p-6 sm:p-8 transition-transform hover:-translate-y-1"
+            key={division.id}
+            href={`/teams/${division.slug}`}
+            className="group relative block overflow-hidden rounded-2xl border border-white/10 bg-surface transition-all duration-300 hover:border-brand"
           >
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="rounded bg-brand/15 px-3 py-1 text-xs font-bold text-brand uppercase">
-                  {div.shortCode}
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300">
-                  <Users className="h-4 w-4 text-brand" />
-                  <span>{t.teamsPage.personnelComposition}</span>
-                </span>
-              </div>
-
-              <h2 className="font-display text-2xl font-bold text-foreground group-hover:text-brand sm:text-3xl">
-                {div.name}
-              </h2>
-
-              <p className="text-sm leading-relaxed text-slate-300">
-                {locale === "id"
-                  ? "Divisi kompetitif utama PT Adre Gemilang Jaya di Jakarta yang diperkuat oleh 4 pemain inti, 1 manajer tim, dan 2 staf pelatih analis."
-                  : "PT Adre Gemilang Jaya's flagship competitive division in Jakarta featuring 4 core players, 1 team manager, and 2 coaching analysts."}
-              </p>
+            {/* Latar Belakang Foto Logo PUBG */}
+            <div className="pointer-events-none absolute inset-0">
+              <Image
+                src={division.bannerImageUrl || "/images/pubg-logo-bg.svg"}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="object-cover object-center opacity-80 transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/55 to-background/85" />
             </div>
 
-            <div className="mt-8 border-t border-white/5 pt-4 text-xs font-bold text-brand uppercase">
-              {t.teamsPage.openRosterCta}
+            {/* Isi Card: Hanya Label PUBGM, Teks Besar PUBG MOBILE, dan Tombol Lihat Daftar Roster */}
+            <div className="relative z-10 flex min-h-[280px] flex-col justify-between gap-8 p-8 sm:min-h-[340px] sm:p-12 lg:flex-row lg:items-center">
+              <div className="w-full space-y-3">
+                <span className="inline-block rounded-md border border-brand/40 bg-brand/15 px-3.5 py-1 font-mono text-xs font-bold tracking-wider text-brand uppercase">
+                  {division.shortCode}
+                </span>
+
+                <h2 className="w-full font-display text-5xl font-black tracking-tight text-foreground uppercase transition-colors group-hover:text-brand sm:text-7xl lg:text-8xl">
+                  {division.name}
+                </h2>
+              </div>
+
+              <div className="shrink-0">
+                <span className="inline-flex items-center justify-center rounded-xl bg-brand px-8 py-4 text-xs font-bold text-background uppercase transition-opacity group-hover:opacity-90">
+                  {t.teamsPage.openRosterCta}
+                </span>
+              </div>
             </div>
           </Link>
         ))}

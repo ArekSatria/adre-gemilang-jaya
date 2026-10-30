@@ -56,7 +56,7 @@ export const mockDivisionDetails: Record<string, DivisionDetail> = {
     tagline: "Tim PUBG Mobile PT Adre Gemilang Jaya yang berbasis di Jakarta.",
     description:
       "Divisi PUBG Mobile PT Adre Gemilang Jaya di Jakarta yang diperkuat oleh 4 pemain inti, 1 manajer tim, serta 2 staf pelatih dan analis.",
-    roster: [
+   roster: [
       {
         id: "rst-01",
         ign: "ADRE Raptor",
@@ -64,7 +64,7 @@ export const mockDivisionDetails: Record<string, DivisionDetail> = {
         role: "IGL",
         roleType: "PLAYER",
         countryCode: "ID",
-        photoUrl: null,
+        photoUrl: "/images/roster/raptor.png",
         joinDate: "2024-03-10",
       },
       {
@@ -74,7 +74,7 @@ export const mockDivisionDetails: Record<string, DivisionDetail> = {
         role: "RUSHER",
         roleType: "PLAYER",
         countryCode: "ID",
-        photoUrl: null,
+        photoUrl: "/images/roster/blaze.png",
         joinDate: "2024-03-10",
       },
       {
@@ -84,7 +84,7 @@ export const mockDivisionDetails: Record<string, DivisionDetail> = {
         role: "SUPPORT",
         roleType: "PLAYER",
         countryCode: "ID",
-        photoUrl: null,
+        photoUrl: "/images/roster/aegis.png",
         joinDate: "2024-06-15",
       },
       {
@@ -94,7 +94,7 @@ export const mockDivisionDetails: Record<string, DivisionDetail> = {
         role: "SCOUT",
         roleType: "PLAYER",
         countryCode: "ID",
-        photoUrl: null,
+        photoUrl: "/images/roster/valkyrie.png",
         joinDate: "2024-08-01",
       },
       {
@@ -104,7 +104,7 @@ export const mockDivisionDetails: Record<string, DivisionDetail> = {
         role: "MANAGER",
         roleType: "STAFF",
         countryCode: "ID",
-        photoUrl: null,
+        photoUrl: "/images/roster/valkyrie.png",
         joinDate: "2024-04-01",
       },
       {
@@ -114,7 +114,7 @@ export const mockDivisionDetails: Record<string, DivisionDetail> = {
         role: "COACH",
         roleType: "STAFF",
         countryCode: "ID",
-        photoUrl: null,
+        photoUrl: "/images/roster/tactix.png",
         joinDate: "2024-03-10",
       },
       {
@@ -124,7 +124,7 @@ export const mockDivisionDetails: Record<string, DivisionDetail> = {
         role: "ANALYST",
         roleType: "STAFF",
         countryCode: "ID",
-        photoUrl: null,
+        photoUrl: "/images/roster/cipher.png",
         joinDate: "2025-01-12",
       },
     ],
