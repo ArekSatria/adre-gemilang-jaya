@@ -1,118 +1,123 @@
 "use client";
 
 import React from "react";
-import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useLanguage, type Locale } from "@/lib/i18n/LanguageContext";
 import {
   CORPORATE_MILESTONES,
   CORPORATE_OFFICES,
 } from "@/lib/utils/corporate-helpers";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
+function resolveLocalized(
+  value: string | { id: string; en: string } | undefined,
+  locale: Locale,
+): string {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  return value[locale];
+}
+
 export function AboutView() {
   const { locale, t } = useLanguage();
 
   return (
-    <div className="mx-auto max-w-7xl space-y-14 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="max-w-3xl">
-        <h1 className="font-display text-3xl font-bold text-foreground sm:text-5xl">
+    <div className="mx-auto max-w-7xl space-y-16 px-4 py-12 sm:px-6 lg:px-8">
+      {/* Header Halaman (Tanpa Subjudul) */}
+      <div className="border-b border-white/10 pb-8">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-foreground uppercase sm:text-5xl">
           {t.aboutPage.title}
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
-          {t.aboutPage.subtitle}
-        </p>
       </div>
 
-      {/* Visi & Misi Rapi Tanpa Penomoran Template AI */}
-      <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-surface p-6 sm:p-8 lg:col-span-5">
-          <div className="space-y-3">
-            <span className="text-xs font-bold text-brand uppercase">
+      {/* Seksi Visi & Misi (Teks Gold Diperbesar Tanpa Judul Visi/Misi Perusahaan) */}
+      <section className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        {/* Card VISI */}
+        <div className="flex flex-col justify-between rounded-2xl border border-white/10 bg-surface p-8 sm:p-10 lg:col-span-5">
+          <div className="space-y-6">
+            <h2 className="font-display text-3xl font-black tracking-tight text-brand uppercase sm:text-5xl">
               {t.aboutPage.visionBadge}
-            </span>
-            <h2 className="font-display text-2xl font-bold text-foreground">
-              {t.aboutPage.visionTitle}
             </h2>
-            <p className="text-sm leading-relaxed text-slate-200 sm:text-base">
+            <p className="text-base leading-relaxed text-slate-200 sm:text-lg">
               {t.aboutPage.visionText}
             </p>
           </div>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-surface p-6 sm:p-8 lg:col-span-7 space-y-5">
-          <div>
-            <span className="text-xs font-bold text-brand uppercase">
+        {/* Card MISI */}
+        <div className="flex flex-col justify-between rounded-2xl border border-white/10 bg-surface p-8 sm:p-10 lg:col-span-7">
+          <div className="space-y-6">
+            <h2 className="font-display text-3xl font-black tracking-tight text-brand uppercase sm:text-5xl">
               {t.aboutPage.missionBadge}
-            </span>
-            <h2 className="mt-1 font-display text-2xl font-bold text-foreground">
-              {t.aboutPage.missionTitle}
             </h2>
-          </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {t.aboutPage.missions.map((mission) => (
-              <div
-                key={mission.heading}
-                className="rounded-lg border border-white/10 bg-background/60 p-5 space-y-2"
-              >
-                <h3 className="font-display text-base font-bold text-foreground">
-                  {mission.heading}
-                </h3>
-                <p className="text-xs leading-relaxed text-slate-300">
-                  {mission.desc}
-                </p>
-              </div>
-            ))}
+            <div className="grid grid-cols-1 gap-4">
+              {t.aboutPage.missions.map((mission) => (
+                <div
+                  key={mission.code}
+                  className="flex items-start gap-4 rounded-xl border border-white/10 bg-background/60 p-5"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand/15 font-mono text-sm font-bold text-brand">
+                    {mission.code}
+                  </span>
+                  <div className="space-y-1">
+                    <h3 className="font-display text-base font-bold text-foreground sm:text-lg">
+                      {mission.heading}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-slate-300">
+                      {mission.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Sejarah Singkat */}
+      {/* Seksi Perjalanan Kami (Tanpa Subjudul) */}
       <section className="space-y-6">
-        <SectionHeading
-          title={t.aboutPage.milestonesHeading}
-          subtitle={t.aboutPage.milestonesSub}
-        />
+        <SectionHeading title={t.aboutPage.milestonesHeading} />
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {CORPORATE_MILESTONES.map((item) => (
             <div
               key={item.year}
-              className="rounded-xl border border-white/10 bg-surface p-6 space-y-2"
+              className="flex flex-col justify-between rounded-2xl border border-white/10 bg-surface p-6 sm:p-8"
             >
-              <span className="font-mono text-sm font-bold text-brand">
-                {item.year}
-              </span>
-              <h3 className="font-display text-lg font-bold text-foreground">
-                {item.title[locale]}
-              </h3>
-              <p className="text-sm leading-relaxed text-slate-300">
-                {item.description[locale]}
-              </p>
+              <div className="space-y-3">
+                <span className="inline-block rounded-md border border-brand/40 bg-brand/15 px-3 py-1 font-mono text-sm font-bold text-brand">
+                  {item.year}
+                </span>
+                <h3 className="font-display text-xl font-bold text-foreground">
+                  {resolveLocalized(item.title, locale)}
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-300">
+                  {resolveLocalized(item.description, locale)}
+                </p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Lokasi Operasional Tunggal (Jakarta) */}
+      {/* Seksi Lokasi Operasional*/}
       <section className="space-y-6">
-        <SectionHeading
-          title={t.aboutPage.officesHeading}
-          subtitle={t.aboutPage.officesSub}
-        />
+        <SectionHeading title={t.aboutPage.officesHeading} />
 
-        <div className="grid grid-cols-1">
-          {CORPORATE_OFFICES.map((office) => (
+        <div className="grid grid-cols-1 gap-6">
+          {CORPORATE_OFFICES.map((office, index) => (
             <div
-              key={office.city.id}
-              className="rounded-xl border border-white/10 bg-surface p-6 sm:p-8 space-y-2"
+              key={office.city.id || index}
+              className="rounded-2xl border border-white/10 bg-surface p-6 sm:p-8"
             >
-              <span className="text-xs font-bold text-brand uppercase">
-                {office.role[locale]}
-              </span>
-              <h3 className="font-display text-2xl font-bold text-foreground">
-                {office.city[locale]}
-              </h3>
-              <p className="text-sm text-slate-300">{office.address[locale]}</p>
+              <div className="space-y-2">
+                <h3 className="font-display text-xl font-bold text-brand uppercase sm:text-2xl">
+                  {resolveLocalized(office.city, locale)}
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
+                  {resolveLocalized(office.address, locale)}
+                </p>
+              </div>
             </div>
           ))}
         </div>
