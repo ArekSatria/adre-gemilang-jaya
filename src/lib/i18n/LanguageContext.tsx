@@ -105,7 +105,7 @@ export const DICTIONARY = {
     },
     matchesPage: {
       title: "PERTANDINGAN",
-      subtitle: "Jadwal turnamen mendatang dan hasil pertandingan tim.",
+      subtitle: "",
       filterStatusAll: "Semua",
       filterStatusUpcoming: "Akan Datang",
       filterStatusCompleted: "Selesai",
@@ -282,7 +282,7 @@ export const DICTIONARY = {
     },
     matchesPage: {
       title: "MATCHES",
-      subtitle: "Upcoming tournament schedule and past match results.",
+      subtitle: "",
       filterStatusAll: "All",
       filterStatusUpcoming: "Upcoming",
       filterStatusCompleted: "Completed",

@@ -1,135 +1,136 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Calendar, ExternalLink } from "lucide-react";
 import type { MatchesPayload } from "@/lib/schemas";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import {
-  filterMatches,
-  formatMatchScoreDisplay,
-  type MatchStatusFilter,
-} from "@/lib/utils/match-helpers";
-import { translateMatchStage } from "@/lib/utils/corporate-helpers";
+import { mockMatchesPayload } from "@/lib/api/mock-data";
+import { formatMatchScoreDisplay } from "@/lib/utils/match-helpers";
 import { SmartLink } from "@/components/ui/SmartLink";
 import { cn } from "@/lib/utils/cn";
 
+type MatchStatusFilter = "ALL" | "UPCOMING" | "COMPLETED";
+
 interface MatchesViewProps {
-  data: MatchesPayload;
+  data?: MatchesPayload;
+  initialData?: MatchesPayload;
 }
 
-export function MatchesView({ data }: MatchesViewProps) {
+export function MatchesView({ data, initialData }: MatchesViewProps) {
   const { locale, t } = useLanguage();
   const [statusFilter, setStatusFilter] = useState<MatchStatusFilter>("ALL");
 
-  const filteredMatches = useMemo(() => {
-    return filterMatches(data.items, statusFilter, "ALL");
-  }, [data.items, statusFilter]);
+  const sourceMatches = useMemo(
+    () => data?.items ?? initialData?.items ?? mockMatchesPayload.items,
+    [data, initialData],
+  );
 
-  const formatScheduleDate = (iso: string) => {
-    return new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
+  const filteredMatches = useMemo(() => {
+    if (statusFilter === "ALL") return sourceMatches;
+    return sourceMatches.filter((match) => match.status === statusFilter);
+  }, [sourceMatches, statusFilter]);
+
+  const formatDate = (iso: string) =>
+    new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
       day: "numeric",
       month: "short",
       year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     }).format(new Date(iso));
-  };
+
+  const filterButtons: { key: MatchStatusFilter; label: string }[] = [
+    { key: "ALL", label: t.matchesPage.filterStatusAll },
+    { key: "UPCOMING", label: t.matchesPage.filterStatusUpcoming },
+    { key: "COMPLETED", label: t.matchesPage.filterStatusCompleted },
+  ];
 
   return (
     <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="max-w-2xl">
-        <h1 className="font-display text-3xl font-bold tracking-normal text-foreground sm:text-5xl">
+      {/* Header Halaman & Tombol Filter (Tanpa Subjudul) */}
+      <div className="flex flex-col justify-between gap-6 border-b border-white/10 pb-8 sm:flex-row sm:items-center">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-foreground uppercase sm:text-5xl">
           {t.matchesPage.title}
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
-          {t.matchesPage.subtitle}
-        </p>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {filterButtons.map((btn) => {
+            const isActive = statusFilter === btn.key;
+            return (
+              <button
+                key={btn.key}
+                type="button"
+                onClick={() => setStatusFilter(btn.key)}
+                className={cn(
+                  "rounded-xl px-4 py-2.5 text-xs font-bold uppercase transition-colors",
+                  isActive
+                    ? "bg-brand text-background"
+                    : "border border-white/10 bg-surface text-slate-300 hover:border-brand hover:text-foreground",
+                )}
+              >
+                {btn.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Filter Status Pertandingan */}
-      <div
-        role="group"
-        aria-label="Filter Status Pertandingan"
-        className="flex flex-wrap items-center gap-2 border-b border-white/10 pb-6"
-      >
-        {(
-          [
-            { key: "ALL", label: t.matchesPage.filterStatusAll },
-            { key: "UPCOMING", label: t.matchesPage.filterStatusUpcoming },
-            { key: "COMPLETED", label: t.matchesPage.filterStatusCompleted },
-          ] as const
-        ).map((tab) => {
-          const active = statusFilter === tab.key;
-          return (
-            <button
-              key={tab.key}
-              type="button"
-              onClick={() => setStatusFilter(tab.key)}
-              className={cn(
-                "cursor-pointer rounded-lg px-4 py-2 text-xs font-semibold transition-colors",
-                active
-                  ? "bg-brand text-background"
-                  : "bg-surface text-slate-300 hover:text-foreground",
-              )}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Daftar Pertandingan */}
+      {/* Daftar Card Pertandingan (Tanpa Teks Minggu/Hari/Babak Liga) */}
       {filteredMatches.length === 0 ? (
-        <div className="py-12 text-center text-sm text-slate-300">
+        <div className="rounded-2xl border border-white/10 bg-surface p-12 text-center text-sm text-slate-300">
           {t.matchesPage.emptyState}
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {filteredMatches.map((match) => {
             const isCompleted = match.status === "COMPLETED";
+
             return (
               <div
                 key={match.id}
-                className="flex flex-col justify-between gap-4 rounded-2xl border border-white/5 bg-surface p-6 sm:flex-row sm:items-center"
+                className="flex flex-col justify-between rounded-2xl border border-white/10 bg-surface p-6 transition-colors hover:border-brand/60 sm:p-8"
               >
-                <div className="space-y-2">
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-300">
-                    <span className="rounded bg-brand/15 px-2.5 py-1 font-bold text-brand uppercase">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-3 text-xs">
+                    <span className="inline-block rounded-md border border-brand/40 bg-brand/15 px-3 py-1 font-mono font-bold text-brand uppercase">
                       {match.division.name}
                     </span>
-                    <span className="inline-flex items-center gap-1.5 font-mono">
-                      <Calendar className="h-3.5 w-3.5 text-brand" />
-                      {formatScheduleDate(match.scheduledAt)}
+                    <span className="font-mono text-slate-300">
+                      {formatDate(match.scheduledAt)}
                     </span>
                   </div>
 
-                  <h2 className="font-display text-xl font-bold text-foreground">
+                  <h2 className="font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl">
                     {match.tournamentName}
                   </h2>
-
-                  <p className="text-xs text-slate-300">
-                    {translateMatchStage(match.stage, locale)}
-                  </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-4">
-                  {isCompleted ? (
-                    <span className="rounded-xl bg-brand/15 px-4 py-2 font-mono text-sm font-bold text-brand">
-                      {formatMatchScoreDisplay(match, t.matchesPage.pointsUnit)}
+                <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-5">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={cn(
+                        "font-mono text-xs font-bold uppercase",
+                        isCompleted ? "text-slate-300" : "text-brand",
+                      )}
+                    >
+                      {isCompleted
+                        ? t.matchesPage.completedBadge
+                        : t.matchesPage.upcomingBadge}
                     </span>
-                  ) : (
-                    <span className="rounded-xl border border-white/10 bg-background/60 px-4 py-2 font-mono text-xs font-bold text-slate-300 uppercase">
-                      {t.matchesPage.upcomingBadge}
-                    </span>
-                  )}
+
+                    {isCompleted && (
+                      <span className="inline-block rounded-lg bg-brand/15 px-3.5 py-1.5 font-mono text-xs font-bold text-brand">
+                        {formatMatchScoreDisplay(
+                          match,
+                          t.matchesPage.pointsUnit,
+                        )}
+                      </span>
+                    )}
+                  </div>
 
                   {match.streamUrl && (
                     <SmartLink
                       href={match.streamUrl}
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-background px-4 py-2 text-xs font-bold text-foreground transition-colors hover:border-brand hover:text-brand"
+                      className="text-xs font-bold text-foreground uppercase transition-colors hover:text-brand"
                     >
-                      <span>{t.matchesPage.watchStream}</span>
-                      <ExternalLink className="h-3.5 w-3.5" />
+                      {t.matchesPage.watchStream}
                     </SmartLink>
                   )}
                 </div>
