@@ -139,14 +139,13 @@ export const DICTIONARY = {
     },
     aboutPage: {
       title: "TENTANG KAMI",
-      subtitle:
-        "PT Adre Gemilang Jaya adalah perusahaan manajemen tim esports yang berkantor di Jakarta.",
+      subtitle: "",
       visionBadge: "VISI",
-      visionTitle: "Visi Perusahaan",
+      visionTitle: "",
       visionText:
         "Menjadi organisasi esports profesional yang kompetitif di tingkat nasional dan Asia Tenggara melalui pembinaan tim yang terarah.",
       missionBadge: "MISI",
-      missionTitle: "Misi Perusahaan",
+      missionTitle: "",
       missions: [
         {
           code: "1",
@@ -165,10 +164,9 @@ export const DICTIONARY = {
         },
       ],
       milestonesHeading: "PERJALANAN KAMI",
-      milestonesSub:
-        "Catatan perkembangan PT Adre Gemilang Jaya sejak berdiri.",
+      milestonesSub: "",
       officesHeading: "LOKASI OPERASIONAL",
-      officesSub: "Alamat kantor manajemen dan tempat latihan tim.",
+      officesSub: "",
     },
     contactPage: {
       title: "KONTAK",
@@ -314,14 +312,13 @@ export const DICTIONARY = {
     },
     aboutPage: {
       title: "ABOUT US",
-      subtitle:
-        "PT Adre Gemilang Jaya is an esports team management company based in Jakarta.",
+      subtitle: "",
       visionBadge: "VISION",
-      visionTitle: "Company Vision",
+      visionTitle: "",
       visionText:
         "To become a competitive professional esports organization at the national and Southeast Asian levels through structured team development.",
       missionBadge: "MISSION",
-      missionTitle: "Company Mission",
+      missionTitle: "",
       missions: [
         {
           code: "1",
@@ -340,10 +337,9 @@ export const DICTIONARY = {
         },
       ],
       milestonesHeading: "OUR JOURNEY",
-      milestonesSub:
-        "Key milestones of PT Adre Gemilang Jaya since its establishment.",
+      milestonesSub: "",
       officesHeading: "OPERATIONAL LOCATION",
-      officesSub: "Management office and team training location.",
+      officesSub: "",
     },
     contactPage: {
       title: "CONTACT",
