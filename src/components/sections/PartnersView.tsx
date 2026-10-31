@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { CORPORATE_PARTNERS_DATA } from "@/lib/utils/corporate-helpers";
+import { PartnerLogoGraphic } from "@/components/ui/BrandElements";
 import { SmartLink } from "@/components/ui/SmartLink";
 
 export function PartnersView() {
@@ -11,44 +12,46 @@ export function PartnersView() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-14 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="max-w-2xl">
-        <h1 className="font-display text-3xl font-bold text-foreground sm:text-5xl">
+      {/* Header Halaman */}
+      <div className="border-b border-white/10 pb-8">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-foreground uppercase sm:text-5xl">
           {t.partnersPage.title}
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
-          {t.partnersPage.subtitle}
-        </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      {/* Grid 5 Mitra Resmi dengan Logo Persegi di Setiap Card */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {CORPORATE_PARTNERS_DATA.map((partner) => (
           <div
             key={partner.id}
-            className="flex flex-col justify-between rounded-xl border border-white/10 bg-surface p-6 sm:p-8"
+            className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-surface p-6 transition-colors hover:border-brand sm:p-8"
           >
-            <div className="space-y-3">
-              <span className="text-xs font-bold text-brand uppercase">
-                {partner.tierLabel}
-              </span>
-
-              <div>
-                <h2 className="font-display text-2xl font-bold text-foreground">
-                  {partner.name}
-                </h2>
-                <p className="mt-1 text-xs font-medium text-slate-400">
-                  {partner.category[locale]}
-                </p>
+            <div className="space-y-6">
+              {/* Kontainer Logo Mitra Persegi */}
+              <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-white/10 bg-background">
+                <PartnerLogoGraphic
+                  partnerId={partner.id}
+                  name={partner.name}
+                  logoUrl={partner.logoUrl}
+                  className="transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
 
-              <p className="text-sm leading-relaxed text-slate-300">
-                {partner.description[locale]}
-              </p>
+              {/* Nama & Deskripsi Mitra (Tanpa Tier Label & Tanpa Kategori) */}
+              <div className="space-y-2">
+                <h2 className="font-display text-2xl font-bold tracking-tight text-foreground group-hover:text-brand">
+                  {partner.name}
+                </h2>
+                <p className="text-sm leading-relaxed text-slate-300">
+                  {partner.description[locale]}
+                </p>
+              </div>
             </div>
 
             <div className="mt-8 border-t border-white/10 pt-4">
               <SmartLink
                 href={partner.websiteUrl}
-                className="text-xs font-bold text-brand uppercase hover:underline"
+                className="inline-block text-xs font-bold text-brand uppercase transition-colors hover:underline"
               >
                 {t.partnersPage.visitPartner}
               </SmartLink>
@@ -57,10 +60,11 @@ export function PartnersView() {
         ))}
       </div>
 
-      <section className="rounded-xl border border-white/10 bg-surface p-8">
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+      {/* Banner Ajakan Kolaborasi Sponsorship */}
+      <section className="rounded-2xl border border-white/10 bg-surface p-8 sm:p-12">
+        <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
           <div className="max-w-2xl space-y-2">
-            <h2 className="font-display text-2xl font-bold text-foreground">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-foreground uppercase sm:text-3xl">
               {t.partnersPage.ctaBannerTitle}
             </h2>
             <p className="text-sm leading-relaxed text-slate-300">
@@ -70,7 +74,7 @@ export function PartnersView() {
 
           <Link
             href="/contact"
-            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-brand px-6 py-3 text-xs font-bold text-background uppercase transition-opacity hover:opacity-90"
+            className="inline-flex shrink-0 items-center justify-center rounded-xl bg-brand px-8 py-4 text-xs font-bold text-background uppercase transition-opacity hover:opacity-90"
           >
             {t.partnersPage.ctaButton}
           </Link>
