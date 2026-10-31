@@ -118,11 +118,10 @@ export const DICTIONARY = {
     },
     newsPage: {
       title: "BERITA & KEGIATAN",
-      subtitle:
-        "Informasi terbaru seputar tim PUBG Mobile dan kegiatan PT Adre Gemilang Jaya.",
+      subtitle: "",
       filterAllCategories: "Semua",
       readMore: "Baca Artikel",
-      readTimeUnit: "menit baca",
+      readTimeUnit: "",
       emptyState: "Belum ada berita di kategori ini.",
       backToNews: "Kembali ke Berita",
       publishedBy: "Oleh",
@@ -295,11 +294,10 @@ export const DICTIONARY = {
     },
     newsPage: {
       title: "NEWS & EVENTS",
-      subtitle:
-        "Latest updates on our PUBG Mobile squad and PT Adre Gemilang Jaya activities.",
+      subtitle: "",
       filterAllCategories: "All",
       readMore: "Read Article",
-      readTimeUnit: "min read",
+      readTimeUnit: "",
       emptyState: "No news articles in this category.",
       backToNews: "Back to News",
       publishedBy: "By",

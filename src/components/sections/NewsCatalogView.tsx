@@ -2,104 +2,113 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import type { getNewsCatalog } from "@/lib/api/client";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import { filterNewsByCategory } from "@/lib/utils/news-helpers";
-import {
-  translateArticleContent,
-  translateCategoryName,
-} from "@/lib/utils/corporate-helpers";
+import { mockNewsCatalog } from "@/lib/api/mock-data";
+import { translateArticleContent } from "@/lib/utils/corporate-helpers";
 import { cn } from "@/lib/utils/cn";
 
-type NewsCatalogData = Awaited<ReturnType<typeof getNewsCatalog>>;
+type NewsCatalogData = typeof mockNewsCatalog;
 
 interface NewsCatalogViewProps {
-  data: NewsCatalogData;
+  data?: NewsCatalogData;
+  initialData?: NewsCatalogData;
+  catalog?: NewsCatalogData;
 }
 
-export function NewsCatalogView({ data }: NewsCatalogViewProps) {
+export function NewsCatalogView({
+  data,
+  initialData,
+  catalog,
+}: NewsCatalogViewProps) {
   const { locale, t } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+  const [activeCategory, setActiveCategory] = useState<string>("ALL");
 
-  // Revisi 3: Hapus kategori "korporasi" dari daftar filter tombol kategori
-  const validCategories = useMemo(() => {
-    return data.categories
-      .filter((cat) => cat.slug.toLowerCase() !== "korporasi")
-      .map((cat) => ({
-        ...cat,
-        name: translateCategoryName(cat.slug, cat.name, locale),
-      }));
-  }, [data.categories, locale]);
+  const payload = data ?? initialData ?? catalog ?? mockNewsCatalog;
 
-  // Revisi 8: Terjemahkan seluruh artikel berita sesuai bahasa aktif (ID/EN)
-  const localizedItems = useMemo(() => {
-    return data.items.map((item) => translateArticleContent(item, locale));
-  }, [data.items, locale]);
+  const categories = useMemo(
+    () =>
+      payload.categories.filter(
+        (cat) =>
+          cat.slug !== "corporate" && cat.name.toLowerCase() !== "korporasi",
+      ),
+    [payload.categories],
+  );
 
   const filteredArticles = useMemo(() => {
-    return filterNewsByCategory(localizedItems, selectedCategory);
-  }, [localizedItems, selectedCategory]);
+    const validItems = payload.items.filter(
+      (item) =>
+        item.category.slug !== "corporate" &&
+        item.category.name.toLowerCase() !== "korporasi",
+    );
 
-  const formatPublishDate = (iso: string) => {
-    return new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
+    const byCategory =
+      activeCategory === "ALL"
+        ? validItems
+        : validItems.filter((item) => item.category.slug === activeCategory);
+
+    return byCategory.map((item) => translateArticleContent(item, locale));
+  }, [payload.items, activeCategory, locale]);
+
+  const translateCategoryLabel = (slug: string, fallbackName: string) => {
+    if (locale === "id") return fallbackName;
+    if (slug === "tournament") return "Tournament";
+    if (slug === "announcement") return "Announcement";
+    return fallbackName;
+  };
+
+  const formatDate = (iso: string) =>
+    new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
       day: "numeric",
       month: "short",
       year: "numeric",
     }).format(new Date(iso));
-  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="max-w-2xl">
-        <h1 className="font-display text-3xl font-bold tracking-normal text-foreground sm:text-5xl">
+      {/* Header Halaman & Filter Kategori (Tanpa Subjudul) */}
+      <div className="flex flex-col justify-between gap-6 border-b border-white/10 pb-8 sm:flex-row sm:items-center">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-foreground uppercase sm:text-5xl">
           {t.newsPage.title}
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
-          {t.newsPage.subtitle}
-        </p>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveCategory("ALL")}
+            className={cn(
+              "rounded-xl px-4 py-2.5 text-xs font-bold uppercase transition-colors",
+              activeCategory === "ALL"
+                ? "bg-brand text-background"
+                : "border border-white/10 bg-surface text-slate-300 hover:border-brand hover:text-foreground",
+            )}
+          >
+            {t.newsPage.filterAllCategories}
+          </button>
+
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat.slug;
+            return (
+              <button
+                key={cat.slug}
+                type="button"
+                onClick={() => setActiveCategory(cat.slug)}
+                className={cn(
+                  "rounded-xl px-4 py-2.5 text-xs font-bold uppercase transition-colors",
+                  isActive
+                    ? "bg-brand text-background"
+                    : "border border-white/10 bg-surface text-slate-300 hover:border-brand hover:text-foreground",
+                )}
+              >
+                {translateCategoryLabel(cat.slug, cat.name)}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Bar Filter Kategori Berita Tanpa "Korporasi" (Revisi 3) */}
-      <div
-        role="group"
-        aria-label="Filter Kategori Berita"
-        className="flex flex-wrap items-center gap-2 border-b border-white/10 pb-6"
-      >
-        <button
-          type="button"
-          onClick={() => setSelectedCategory("ALL")}
-          className={cn(
-            "cursor-pointer rounded-lg px-4 py-2 text-xs font-semibold transition-colors",
-            selectedCategory === "ALL"
-              ? "bg-brand text-background"
-              : "bg-surface text-slate-300 hover:text-foreground",
-          )}
-        >
-          {t.newsPage.filterAllCategories}
-        </button>
-
-        {validCategories.map((cat) => {
-          const active = selectedCategory === cat.slug;
-          return (
-            <button
-              key={cat.slug}
-              type="button"
-              onClick={() => setSelectedCategory(cat.slug)}
-              className={cn(
-                "cursor-pointer rounded-lg px-4 py-2 text-xs font-semibold transition-colors",
-                active
-                  ? "bg-brand text-background"
-                  : "bg-surface text-slate-300 hover:text-foreground",
-              )}
-            >
-              {cat.name}
-            </button>
-          );
-        })}
-      </div>
-
+      {/* Grid Artikel Berita (Tanpa Menit Baca) */}
       {filteredArticles.length === 0 ? (
-        <div className="py-12 text-center text-sm text-slate-300">
+        <div className="rounded-2xl border border-white/10 bg-surface p-12 text-center text-sm text-slate-300">
           {t.newsPage.emptyState}
         </div>
       ) : (
@@ -108,31 +117,28 @@ export function NewsCatalogView({ data }: NewsCatalogViewProps) {
             <Link
               key={article.id}
               href={`/news/${article.slug}`}
-              className="group flex flex-col justify-between rounded-2xl bg-surface p-6 transition-transform hover:-translate-y-1"
+              className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-surface p-6 transition-colors hover:border-brand sm:p-8"
             >
-              <div>
-                <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-300">
-                  <span className="font-semibold text-brand">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between gap-2 text-xs text-slate-300">
+                  <span className="inline-block rounded-md border border-brand/40 bg-brand/15 px-3 py-1 font-mono font-bold text-brand uppercase">
                     {article.category.name}
                   </span>
-                  <div className="flex items-center gap-3">
-                    <span>{formatPublishDate(article.publishedAt)}</span>
-                    <span>
-                      {article.readingTimeMinutes} {t.newsPage.readTimeUnit}
-                    </span>
-                  </div>
+                  <span className="font-mono">
+                    {formatDate(article.publishedAt)}
+                  </span>
                 </div>
 
-                <h2 className="mt-3 font-display text-xl font-bold leading-snug text-foreground transition-colors group-hover:text-brand">
+                <h2 className="font-display text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-brand">
                   {article.title}
                 </h2>
 
-                <p className="mt-2.5 line-clamp-3 text-sm leading-relaxed text-slate-300">
+                <p className="line-clamp-3 text-sm leading-relaxed text-slate-300">
                   {article.excerpt}
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 text-xs font-semibold text-brand">
+              <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-4 text-xs font-bold text-brand uppercase">
                 <span>{t.newsPage.readMore}</span>
               </div>
             </Link>
