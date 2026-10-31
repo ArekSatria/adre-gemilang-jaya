@@ -170,8 +170,7 @@ export const DICTIONARY = {
     },
     contactPage: {
       title: "KONTAK",
-      subtitle:
-        "Hubungi manajemen PT Adre Gemilang Jaya untuk keperluan sponsorship, undangan turnamen, atau pertanyaan umum.",
+      subtitle: "",
       directInfoHeading: "KONTAK LANGSUNG",
       emailLabel: "Email Resmi",
       hqLabel: "Alamat Kantor",
@@ -343,8 +342,7 @@ export const DICTIONARY = {
     },
     contactPage: {
       title: "CONTACT",
-      subtitle:
-        "Reach out to PT Adre Gemilang Jaya management for sponsorship proposals, tournament invitations, or general inquiries.",
+      subtitle: "",
       directInfoHeading: "DIRECT CONTACT",
       emailLabel: "Official Email",
       hqLabel: "Office Address",
