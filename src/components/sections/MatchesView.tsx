@@ -8,7 +8,7 @@ import { formatMatchScoreDisplay } from "@/lib/utils/match-helpers";
 import { SmartLink } from "@/components/ui/SmartLink";
 import { cn } from "@/lib/utils/cn";
 
-type MatchStatusFilter = "ALL" | "UPCOMING" | "COMPLETED";
+type MatchStatusFilter = "ALL" | "LIVE" | "UPCOMING" | "COMPLETED";
 
 interface MatchesViewProps {
   data?: MatchesPayload;
@@ -20,7 +20,7 @@ export function MatchesView({ data, initialData }: MatchesViewProps) {
   const [statusFilter, setStatusFilter] = useState<MatchStatusFilter>("ALL");
 
   const sourceMatches = useMemo(
-    () => data?.items ?? initialData?.items ?? mockMatchesPayload.items,
+    () => data?.items ?? initialData?.items ?? [],
     [data, initialData],
   );
 
@@ -38,6 +38,7 @@ export function MatchesView({ data, initialData }: MatchesViewProps) {
 
   const filterButtons: { key: MatchStatusFilter; label: string }[] = [
     { key: "ALL", label: t.matchesPage.filterStatusAll },
+    { key: "LIVE", label: t.matchesPage.filterStatusLive },
     { key: "UPCOMING", label: t.matchesPage.filterStatusUpcoming },
     { key: "COMPLETED", label: t.matchesPage.filterStatusCompleted },
   ];
@@ -59,12 +60,22 @@ export function MatchesView({ data, initialData }: MatchesViewProps) {
                 type="button"
                 onClick={() => setStatusFilter(btn.key)}
                 className={cn(
-                  "rounded-xl px-4 py-2.5 text-xs font-bold uppercase transition-colors",
+                  "rounded-xl px-4 py-2.5 text-xs font-bold uppercase transition-colors inline-flex items-center gap-2",
                   isActive
                     ? "bg-brand text-background"
                     : "border border-white/10 bg-surface text-slate-300 hover:border-brand hover:text-foreground",
                 )}
               >
+                {btn.key === "LIVE" && (
+                  <span
+                    className={cn(
+                      "inline-block h-2 w-2 rounded-full",
+                      isActive
+                        ? "bg-rose-600 animate-pulse"
+                        : "bg-rose-500 animate-pulse",
+                    )}
+                  />
+                )}
                 {btn.label}
               </button>
             );
@@ -106,11 +117,20 @@ export function MatchesView({ data, initialData }: MatchesViewProps) {
                   <div className="flex items-center gap-3">
                     <span
                       className={cn(
-                        "font-mono text-xs font-bold uppercase",
-                        isCompleted ? "text-slate-300" : "text-brand",
+                        "font-mono text-xs font-bold uppercase inline-flex items-center gap-1.5",
+                        match.status === "LIVE"
+                          ? "text-rose-500"
+                          : isCompleted
+                          ? "text-slate-300"
+                          : "text-brand",
                       )}
                     >
-                      {isCompleted
+                      {match.status === "LIVE" && (
+                        <span className="inline-block h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
+                      )}
+                      {match.status === "LIVE"
+                        ? t.matchesPage.liveBadge
+                        : isCompleted
                         ? t.matchesPage.completedBadge
                         : t.matchesPage.upcomingBadge}
                     </span>

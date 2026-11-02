@@ -6,14 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cms.adregemilangjaya.com",
-        pathname: "/uploads/**",
+        hostname: "**",
       },
       {
         protocol: "http",
-        hostname: "localhost",
-        port: "8000",
-        pathname: "/uploads/**",
+        hostname: "**",
       },
     ],
   },

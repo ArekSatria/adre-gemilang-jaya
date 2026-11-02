@@ -21,40 +21,53 @@ function MemberCard({
   roleLabel: string;
 }) {
   const [imgError, setImgError] = useState(false);
-  const fallbackPhoto = "/images/pubg-logo-bg.svg";
-  const resolvedPhoto =
-    member.photoUrl && !imgError ? member.photoUrl : fallbackPhoto;
+  const hasPhoto = member.photoUrl && member.photoUrl.trim() !== "" && !imgError;
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-surface p-6 transition-all duration-300 hover:border-brand sm:p-8">
-      {/* Animasi Smooth Hover Background Foto Personil */}
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-35">
-        <Image
-          src={resolvedPhoto}
-          alt={member.ign}
-          fill
-          unoptimized
-          sizes="(max-width: 768px) 100vw, 330px"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
-          onError={() => setImgError(true)}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
-      </div>
-
-      <div className="relative z-10 flex flex-col justify-between h-full space-y-6">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="inline-block rounded-md border border-brand/40 bg-brand/15 px-3 py-1 font-mono text-xs font-bold text-brand uppercase">
-              {member.role}
+    <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-surface transition-all duration-300 hover:border-brand hover:shadow-xl hover:shadow-brand/5">
+      {/* Container Foto Atlet (Rasio 4:5 Portrait Standar Roster Esports) */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-slate-950/80 border-b border-white/5">
+        {hasPhoto ? (
+          <Image
+            src={member.photoUrl!}
+            alt={member.ign}
+            fill
+            unoptimized
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-slate-900 to-slate-950 p-6 text-center">
+            <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-brand/10 border border-brand/20 text-brand font-display font-black text-2xl">
+              {member.ign.slice(0, 2).toUpperCase()}
+            </div>
+            <span className="mt-3 text-[11px] font-mono uppercase tracking-wider text-slate-500">
+              Foto Belum Tersedia
             </span>
           </div>
+        )}
 
-          <div>
-            <h3 className="font-display text-2xl font-bold tracking-tight text-foreground uppercase group-hover:text-brand sm:text-3xl">
-              {member.ign.replace(/[•—–-]/g, " ")}
-            </h3>
-            <p className="mt-1 text-sm text-slate-300">{member.fullName}</p>
-          </div>
+        {/* Gradasi lembut agar foto menyatu secara natural ke badan kartu */}
+        {hasPhoto && (
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-85" />
+        )}
+
+        {/* Role Badge di sudut kiri atas foto */}
+        <div className="absolute top-4 left-4 z-10">
+          <span className="inline-block rounded-md border border-brand/40 bg-surface/90 backdrop-blur-md px-2.5 py-1 font-mono text-[11px] font-bold text-brand uppercase shadow-md">
+            {member.role}
+          </span>
+        </div>
+      </div>
+
+      {/* Bagian Informasi Atlet & Peran */}
+      <div className="p-6 flex flex-col justify-between flex-1 space-y-4">
+        <div>
+          <h3 className="font-display text-2xl font-bold tracking-tight text-foreground uppercase group-hover:text-brand transition-colors sm:text-3xl">
+            {member.ign.replace(/[•—–-]/g, " ")}
+          </h3>
+          <p className="mt-1 text-sm text-slate-300">{member.fullName}</p>
         </div>
 
         <div className="border-t border-white/10 pt-4 text-xs font-semibold text-slate-400">
@@ -69,27 +82,7 @@ export function DivisionDetailView({ division }: DivisionDetailViewProps) {
   const { locale, t } = useLanguage();
 
   const players = division.roster.filter((m) => m.roleType === "PLAYER");
-  const rawStaff = division.roster.filter((m) => m.roleType === "STAFF");
-
-  const hasManager = rawStaff.some((s) =>
-    s.role.toUpperCase().includes("MANAGER"),
-  );
-
-  const staffWithManager: RosterMember[] = hasManager
-    ? rawStaff
-    : [
-        {
-          id: "rst-manager",
-          ign: "ADRE Valkyrie",
-          fullName: "Dimas Prakoso",
-          role: "MANAGER" as const,
-          roleType: "STAFF" as const,
-          countryCode: "ID",
-          photoUrl: "/images/roster/valkyrie.png",
-          joinDate: "2024-04-01",
-        },
-        ...rawStaff,
-      ];
+  const staff = division.roster.filter((m) => m.roleType === "STAFF");
 
   const getRoleTranslation = (roleKey: string) => {
     const normalized = roleKey.toUpperCase();
@@ -131,30 +124,42 @@ export function DivisionDetailView({ division }: DivisionDetailViewProps) {
       <section className="space-y-6">
         <SectionHeading title={t.teamsPage.playersHeading} />
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {players.map((player) => (
-            <MemberCard
-              key={player.id}
-              member={player}
-              roleLabel={getRoleTranslation(player.role)}
-            />
-          ))}
-        </div>
+        {players.length === 0 ? (
+          <div className="rounded-2xl border border-white/10 bg-surface p-12 text-center text-sm text-slate-300">
+            Belum ada data pemain untuk divisi ini.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {players.map((player) => (
+              <MemberCard
+                key={player.id}
+                member={player}
+                roleLabel={getRoleTranslation(player.role)}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Manajer & Staf Pelatih */}
       <section className="space-y-6">
         <SectionHeading title={t.teamsPage.managementHeading} />
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {staffWithManager.map((member) => (
-            <MemberCard
-              key={member.id}
-              member={member}
-              roleLabel={getRoleTranslation(member.role)}
-            />
-          ))}
-        </div>
+        {staff.length === 0 ? (
+          <div className="rounded-2xl border border-white/10 bg-surface p-12 text-center text-sm text-slate-300">
+            Belum ada data manajer & staf pelatih untuk divisi ini.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {staff.map((member) => (
+              <MemberCard
+                key={member.id}
+                member={member}
+                roleLabel={getRoleTranslation(member.role)}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Prestasi Tim (Tanpa Subjudul) */}

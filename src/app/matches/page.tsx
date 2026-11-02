@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     "Jadwal turnamen resmi PMSL SEA dan rekapitulasi skor akhir divisi kompetitif PUBG Mobile PT Adre Gemilang Jaya.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function MatchesPage() {
   const matchesData = await getMatchesData();
 

@@ -5,6 +5,7 @@ export const GlobalSettingsSchema = z.object({
   siteName: z.string(),
   logoUrl: z.string().nullable(),
   tagline: z.string(),
+  heroImageUrl: z.string().nullable().optional(),
   activeDivisionsNav: z.array(
     z.object({
       name: z.string(),
@@ -144,6 +145,7 @@ export const HomePayloadSchema = z.object({
     badgeText: z.string(),
     headline: z.string(),
     subheadline: z.string(),
+    heroImageUrl: z.string().nullable().optional(),
     primaryCta: z.object({
       label: z.string(),
       href: z.string(),

@@ -252,12 +252,12 @@ export function translateArticleContent<
 
   return {
     ...article,
-    title: entry ? entry.title[locale] : article.title,
-    excerpt: entry ? entry.excerpt[locale] : article.excerpt,
+    title: locale === "en" && entry ? entry.title.en : article.title,
+    excerpt: locale === "en" && entry ? entry.excerpt.en : article.excerpt,
     contentHtml:
       article.contentHtml !== undefined
-        ? entry
-          ? entry.contentHtml[locale]
+        ? locale === "en" && entry
+          ? entry.contentHtml.en
           : article.contentHtml
         : undefined,
     category: {

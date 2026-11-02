@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     "Berita resmi, pengumuman roster PUBG Mobile, laporan hasil turnamen, dan kabar korporasi PT Adre Gemilang Jaya.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function NewsPage() {
   const newsData = await getNewsCatalog();
 

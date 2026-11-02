@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     "Katalog divisi olahraga elektronik resmi PT Adre Gemilang Jaya. Eksplorasi profil skuad kompetitif PUBG Mobile.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function TeamsPage() {
   const divisions = await getActiveDivisions();
 

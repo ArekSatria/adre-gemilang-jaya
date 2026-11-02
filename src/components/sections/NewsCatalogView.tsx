@@ -4,10 +4,11 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { mockNewsCatalog } from "@/lib/api/mock-data";
+import { type NewsListPayload } from "@/lib/schemas";
 import { translateArticleContent } from "@/lib/utils/corporate-helpers";
 import { cn } from "@/lib/utils/cn";
 
-type NewsCatalogData = typeof mockNewsCatalog;
+type NewsCatalogData = NewsListPayload | typeof mockNewsCatalog;
 
 interface NewsCatalogViewProps {
   data?: NewsCatalogData;

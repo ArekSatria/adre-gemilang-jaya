@@ -17,8 +17,55 @@ function resolveLocalized(
   return value[locale];
 }
 
-export function AboutView() {
+interface AboutViewProps {
+  company?: {
+    vision?: string | null;
+    missions?: any;
+    officeAddress?: string | null;
+    milestones?: any;
+  } | null;
+}
+
+export function AboutView({ company }: AboutViewProps = {}) {
   const { locale, t } = useLanguage();
+
+  const visionText =
+    locale === "id" && company?.vision ? company.vision : t.aboutPage.visionText;
+
+  const missionsList =
+    Array.isArray(company?.missions) && company.missions.length > 0
+      ? company.missions.map((m: any, idx: number) => {
+          if (typeof m === "object" && m !== null) {
+            return {
+              code: `${idx + 1}`,
+              heading: m.title || m.heading || `Misi ${idx + 1}`,
+              desc: m.description || m.desc || "",
+            };
+          }
+          return {
+            code: `${idx + 1}`,
+            heading: `Misi ${idx + 1}`,
+            desc: typeof m === "string" ? m : "",
+          };
+        })
+      : Array.isArray(company?.missions) && company.missions.length === 0
+      ? []
+      : t.aboutPage.missions;
+
+  const milestonesList =
+    Array.isArray(company?.milestones) && company.milestones.length > 0
+      ? company.milestones.map((m: any) => ({
+          year: m.year,
+          title: typeof m.title === "object" && m.title !== null ? m.title[locale] || m.title["id"] : m.title,
+          description: typeof m.description === "object" && m.description !== null ? m.description[locale] || m.description["id"] : m.description,
+        }))
+      : Array.isArray(company?.milestones) && company.milestones.length === 0
+      ? []
+      : CORPORATE_MILESTONES.map((item) => ({
+          year: item.year,
+          title: resolveLocalized(item.title, locale),
+          description: resolveLocalized(item.description, locale),
+        }));
 
   return (
     <div className="mx-auto max-w-7xl space-y-16 px-4 py-12 sm:px-6 lg:px-8">
@@ -38,7 +85,7 @@ export function AboutView() {
               {t.aboutPage.visionBadge}
             </h2>
             <p className="text-base leading-relaxed text-slate-200 sm:text-lg">
-              {t.aboutPage.visionText}
+              {visionText}
             </p>
           </div>
         </div>
@@ -50,26 +97,32 @@ export function AboutView() {
               {t.aboutPage.missionBadge}
             </h2>
 
-            <div className="grid grid-cols-1 gap-4">
-              {t.aboutPage.missions.map((mission) => (
-                <div
-                  key={mission.code}
-                  className="flex items-start gap-4 rounded-xl border border-white/10 bg-background/60 p-5"
-                >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand/15 font-mono text-sm font-bold text-brand">
-                    {mission.code}
-                  </span>
-                  <div className="space-y-1">
-                    <h3 className="font-display text-base font-bold text-foreground sm:text-lg">
-                      {mission.heading}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-slate-300">
-                      {mission.desc}
-                    </p>
+            {missionsList.length === 0 ? (
+              <div className="rounded-xl border border-white/10 bg-background/60 p-6 text-center text-sm text-slate-400">
+                Belum ada data misi yang ditambahkan.
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4">
+                {missionsList.map((mission) => (
+                  <div
+                    key={mission.code}
+                    className="flex items-start gap-4 rounded-xl border border-white/10 bg-background/60 p-5"
+                  >
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand/15 font-mono text-sm font-bold text-brand">
+                      {mission.code}
+                    </span>
+                    <div className="space-y-1">
+                      <h3 className="font-display text-base font-bold text-foreground sm:text-lg">
+                        {mission.heading}
+                      </h3>
+                      <p className="text-sm leading-relaxed text-slate-300">
+                        {mission.desc}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -78,26 +131,32 @@ export function AboutView() {
       <section className="space-y-6">
         <SectionHeading title={t.aboutPage.milestonesHeading} />
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {CORPORATE_MILESTONES.map((item) => (
-            <div
-              key={item.year}
-              className="flex flex-col justify-between rounded-2xl border border-white/10 bg-surface p-6 sm:p-8"
-            >
-              <div className="space-y-3">
-                <span className="inline-block rounded-md border border-brand/40 bg-brand/15 px-3 py-1 font-mono text-sm font-bold text-brand">
-                  {item.year}
-                </span>
-                <h3 className="font-display text-xl font-bold text-foreground">
-                  {resolveLocalized(item.title, locale)}
-                </h3>
-                <p className="text-sm leading-relaxed text-slate-300">
-                  {resolveLocalized(item.description, locale)}
-                </p>
+        {milestonesList.length === 0 ? (
+          <div className="rounded-2xl border border-white/10 bg-surface p-12 text-center text-sm text-slate-300">
+            Belum ada data tonggak perjalanan sejarah.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {milestonesList.map((item: any, idx: number) => (
+              <div
+                key={item.year + idx}
+                className="flex flex-col justify-between rounded-2xl border border-white/10 bg-surface p-6 sm:p-8"
+              >
+                <div className="space-y-3">
+                  <span className="inline-block rounded-md border border-brand/40 bg-brand/15 px-3 py-1 font-mono text-sm font-bold text-brand">
+                    {item.year}
+                  </span>
+                  <h3 className="font-display text-xl font-bold text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-slate-300">
+                    {item.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Seksi Lokasi Operasional*/}

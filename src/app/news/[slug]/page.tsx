@@ -40,6 +40,8 @@ export async function generateMetadata({
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const { slug } = await params;
   const article = await getNewsBySlug(slug);
