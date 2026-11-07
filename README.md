@@ -116,3 +116,14 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek ini di komputer lokal:
    npm run build
    npm run start
    ```
+
+### Konfigurasi Database Prisma & Panel Admin CMS (`/admin`)
+
+Proyek ini menggunakan arsitektur **Fullstack Next.js** yang terintegrasi dengan **Prisma ORM (`v6.19.3`)** dan **Neon Serverless PostgreSQL**, serta dilengkapi mekanisme *automatic fallback* ke *mock data* tervalidasi Zod apabila basis data sedang tidak terjangkau:
+
+1. Salin berkas `.env.example` menjadi `.env` dan isi nilai `DATABASE_URL` serta `JWT_SECRET`.
+2. Bangun *Prisma Client* dan sinkronkan skema tabel ke basis data:
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   npx prisma db seed
