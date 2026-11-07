@@ -5,6 +5,7 @@ import { getGlobalSettings } from "@/lib/api/client";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { FloatingGlassNavbar } from "@/components/layout/FloatingGlassNavbar";
 import { ObsidianFooter } from "@/components/layout/ObsidianFooter";
+import { PublicLayoutShell } from "@/components/layout/PublicLayoutShell";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -40,12 +41,17 @@ export default async function RootLayout({
     <html lang="id" className={`${oswald.variable} ${inter.variable} dark`}>
       <body className="flex min-h-screen flex-col esports-grid-bg font-sans text-foreground antialiased">
         <LanguageProvider>
-          <FloatingGlassNavbar
-            siteName={settings.siteName}
-            logoUrl={settings.logoUrl}
-          />
-          <main className="flex-1">{children}</main>
-          <ObsidianFooter settings={settings} />
+          <PublicLayoutShell
+            navbar={
+              <FloatingGlassNavbar
+                siteName={settings.siteName}
+                logoUrl={settings.logoUrl}
+              />
+            }
+            footer={<ObsidianFooter settings={settings} />}
+          >
+            {children}
+          </PublicLayoutShell>
         </LanguageProvider>
       </body>
     </html>
