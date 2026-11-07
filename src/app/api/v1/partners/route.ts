@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function GET() {
   try {
@@ -41,15 +41,21 @@ export async function POST(request: Request) {
         name,
         tier: tier || "OFFICIAL",
         logoUrl: logoUrl || null,
-        websiteUrl: websiteUrl || "https://adregemilang.co.id",
+        websiteUrl: websiteUrl || "https://adregemilangjaya.co.id",
         description: description || null,
         displayOrder: displayOrder ? parseInt(displayOrder) : 1,
       },
     });
 
+    // Paksa bersihkan cache halaman publik agar mitra baru langsung muncul
     try {
-      revalidateTag("home", { expire: 0 });
-    } catch {}
+      revalidateTag("home");
+      revalidateTag("partners");
+      revalidatePath("/", "layout");
+      revalidatePath("/partners", "page");
+    } catch (err) {
+      console.warn("Revalidation warning:", err);
+    }
 
     return NextResponse.json({
       success: true,

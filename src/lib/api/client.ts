@@ -133,3 +133,12 @@ export async function getPartners() {
   } catch {}
   return CORPORATE_PARTNERS_DATA;
 }
+
+// 8. Partners (Updated dengan revalidation tags)
+export async function getPartners() {
+  const fromCms = await fetchFromCms("/partners", z.array(z.any()), ["partners"]);
+  if (fromCms && Array.isArray(fromCms) && fromCms.length > 0) {
+    return fromCms;
+  }
+  return CORPORATE_PARTNERS_DATA;
+}
